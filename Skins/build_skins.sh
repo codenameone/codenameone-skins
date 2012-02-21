@@ -26,3 +26,7 @@ zip -0 ../iphone3gs.skin *
 cd ../torch
 cp -f ../../Themes/blackberry_theme.res .
 zip -0 ../torch.skin *
+
+cd ../xoom
+cp -f ../../Themes/android_holo_light.res .
+zip -0 ../xoom.skin *
