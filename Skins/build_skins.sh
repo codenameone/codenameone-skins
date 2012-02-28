@@ -11,6 +11,10 @@ cd ../ipad
 cp -f ../../Themes/iPhoneTheme.res .
 zip -0 ../ipad.skin *
 
+cd ../ipad3
+cp -f ../../Themes/iPhoneTheme.res .
+zip -0 ../ipad3.skin *
+
 cd ../iphone4
 cp -f ../../Themes/iPhoneTheme.res .
 zip -0 ../iphone4.skin *
