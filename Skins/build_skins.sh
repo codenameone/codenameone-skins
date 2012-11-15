@@ -19,6 +19,10 @@ cd ../iphone4
 cp -f ../../Themes/iPhoneTheme.res .
 zip -0 ../iphone4.skin *
 
+cd ../iphone5
+cp -f ../../Themes/iPhoneTheme.res .
+zip -0 ../iphone5.skin *
+
 cd ../nexus
 cp -f ../../Themes/androidTheme.res .
 zip -0 ../nexus.skin *
@@ -34,3 +38,7 @@ zip -0 ../torch.skin *
 cd ../xoom
 cp -f ../../Themes/android_holo_light.res .
 zip -0 ../xoom.skin *
+
+cd ../lumia
+cp -f ../../Themes/winTheme.res .
+zip -0 ../lumia.skin *
