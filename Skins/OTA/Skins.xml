@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Skins>
 <Skin name="HTCOne" icon="/HTCOne.png" url="/HTCOne.skin"/>
+<Skin name="Google Nexus 7" icon="/GoogleNexus7.png" url="/GoogleNexus7.skin"/>
+<Skin name="iPad Mini" icon="/AppleIPadMini.png" url="/AppleIPadMini.skin"/>
+<Skin name="Blackberry Bold 9790" icon="/BlackberryBold9790.png" url="/BlackberryBold9790.skin"/>
 <Skin name="Nokia Asha 311" icon="/NokiaAsha311.png" url="/NokiaAsha311.skin"/>
+<Skin name="Nokia E71" icon="/NokiaE71.png" url="/NokiaE71.skin"/>
+<Skin name="Nokia Lumia-920" icon="/NokiaLumia920.png" url="/NokiaLumia920.skin"/>
 </Skins>
