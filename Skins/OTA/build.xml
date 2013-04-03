@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build-skins" default="build-skins" basedir=".">
+    <target name="build-skins">
+        <copy file="../../Themes/iPhoneTheme.res" todir="../../Skins/OTA/AppleIPadMini" />
+        <copy file="../../Themes/blackberry_theme.res" todir="../../Skins/OTA/BlackberryBold9790" />
+        <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/GoogleNexus7" />
+        <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/HTCOne" />
+        <copy file="../../Themes/winTheme.res" todir="../../Skins/OTA/NokiaLumia920" />
+
+        
+        <zip basedir="../../Skins/OTA/AppleIPadMini" destfile="../../Skins/OTA/AppleIPadMini.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/BlackberryBold9790" destfile="../../Skins/OTA/BlackberryBold9790.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/GoogleNexus7" destfile="../../Skins/OTA/GoogleNexus7.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/HTCOne" destfile="../../Skins/OTA/HTCOne.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/NokiaAsha311" destfile="../../Skins/OTA/NokiaAsha311.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/NokiaE71" destfile="../../Skins/OTA/NokiaE71.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/NokiaLumia920" destfile="../../Skins/OTA/NokiaLumia920.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+    </target>    
+</project>
