@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Skins>
-    <Skin name="HTCOne" icon="/HTCOne.png" url="/HTCOne.skin" version="1"/>
-    <Skin name="Google Nexus 7" icon="/GoogleNexus7.png" url="/GoogleNexus7.skin" version="1"/>
+    <Skin name="HTCOne" icon="/HTCOne.png" url="/HTCOne.skin" version="2"/>
+    <Skin name="Google Nexus 7" icon="/GoogleNexus7.png" url="/GoogleNexus7.skin" version="2"/>
     <Skin name="iPad Mini" icon="/AppleIPadMini.png" url="/AppleIPadMini.skin" version="1"/>
     <Skin name="Blackberry Bold 9790" icon="/BlackberryBold9790.png" url="/BlackberryBold9790.skin" version="1"/>
     <Skin name="Nokia Asha 311" icon="/NokiaAsha311.png" url="/NokiaAsha311.skin" version="1"/>
