@@ -6,6 +6,8 @@
         <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/GoogleNexus7" />
         <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/HTCOne" />
         <copy file="../../Themes/winTheme.res" todir="../../Skins/OTA/NokiaLumia920" />
+        <copy file="../../Themes/nokia_touch_theme.res" todir="../../Skins/OTA/NokiaAsha311" />
+        <copy file="../../Themes/nokia_non_touch_theme.res" todir="../../Skins/OTA/NokiaE71" />
 
         
         <zip basedir="../../Skins/OTA/AppleIPadMini" destfile="../../Skins/OTA/AppleIPadMini.skin" compress="false">
