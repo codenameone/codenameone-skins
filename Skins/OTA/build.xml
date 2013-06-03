@@ -8,6 +8,7 @@
         <copy file="../../Themes/winTheme.res" todir="../../Skins/OTA/NokiaLumia920" />
         <copy file="../../Themes/nokia_touch_theme.res" todir="../../Skins/OTA/NokiaAsha311" />
         <copy file="../../Themes/nokia_non_touch_theme.res" todir="../../Skins/OTA/NokiaE71" />
+        <copy file="../../Themes/nokia_asha_theme.res" todir="../../Skins/OTA/NokiaAsha501" />
 
         
         <zip basedir="../../Skins/OTA/AppleIPadMini" destfile="../../Skins/OTA/AppleIPadMini.skin" compress="false">
@@ -23,6 +24,9 @@
             <exclude name="**/svn/"/>
         </zip>
         <zip basedir="../../Skins/OTA/NokiaAsha311" destfile="../../Skins/OTA/NokiaAsha311.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/NokiaAsha501" destfile="../../Skins/OTA/NokiaAsha501.skin" compress="false">
             <exclude name="**/svn/"/>
         </zip>
         <zip basedir="../../Skins/OTA/NokiaE71" destfile="../../Skins/OTA/NokiaE71.skin" compress="false">
