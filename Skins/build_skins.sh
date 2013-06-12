@@ -23,6 +23,11 @@ cd ../iphone5
 cp -f ../../Themes/iPhoneTheme.res .
 zip -0 ../iphone5.skin *
 
+cd ../iphone5_os7
+cp -f ../../Themes/iOS7Theme.res .
+zip -0 ../iphone5_os7.skin *
+cp -f ../iphone5_os7.skin ../OTA/iphone5_os7.skin
+
 cd ../nexus
 cp -f ../../Themes/androidTheme.res .
 zip -0 ../nexus.skin *
