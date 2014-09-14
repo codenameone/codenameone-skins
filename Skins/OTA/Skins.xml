@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Skins>
+    <Skin name="iPhone 6" icon="/iphone5_os7.png" url="/iphone6.skin" version="1"/>
+    <Skin name="iPhone 6+" icon="/iphone5_os7.png" url="/iphone6Plus.skin" version="1"/>
     <Skin name="iPhone 5 With iOS 6" icon="/iphone5_os7.png" url="/iphone5.skin" version="4"/>
     <Skin name="iPhone 4 With iOS 6" icon="/iphone4_os7.png" url="/iphone4.skin" version="4"/>
     <Skin name="iPhone 3gs With iOS 6" icon="/iphone3gs_os7.png" url="/iphone3gs.skin" version="4"/>
