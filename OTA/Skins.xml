@@ -20,4 +20,5 @@
     <Skin name="Nokia E71" icon="/NokiaE71.png" url="/NokiaE71.skin" version="2"/>
     <Skin name="Nokia Lumia-920" icon="/NokiaLumia920.png" url="/NokiaLumia920.skin" version="3"/>
     <Skin name="Nokia Asha 501" icon="/NokiaAsha501.png" url="/NokiaAsha501.skin" version="3"/>
+    <Skin name="iPad Pro" icon="/ipad-pro.png" url="/ipad-pro.skin" version="1"/>
 </Skins>
