@@ -11,6 +11,9 @@
         <copy file="../../Themes/nokia_asha_theme.res" todir="../../Skins/OTA/NokiaAsha501" />
 
         
+        <zip basedir="../../Skins/OTA/Nexus5" destfile="../../Skins/OTA/Nexus5.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
         <zip basedir="../../Skins/OTA/AppleIPadMini" destfile="../../Skins/OTA/AppleIPadMini.skin" compress="false">
             <exclude name="**/svn/"/>
         </zip>

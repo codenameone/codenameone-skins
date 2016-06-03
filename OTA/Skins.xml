@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Skins>
+    <Skin name="Nexus 5" icon="/Nexus5.png" url="/Nexus5.skin" version="1"/>
     <Skin name="iPhone 6" icon="/iphone5_os7.png" url="/iphone6.skin" version="1"/>
     <Skin name="iPhone 6+" icon="/iphone5_os7.png" url="/iphone6Plus.skin" version="1"/>
     <Skin name="iPhone 5 With iOS 6" icon="/iphone5_os7.png" url="/iphone5.skin" version="4"/>
@@ -20,5 +21,4 @@
     <Skin name="Nokia E71" icon="/NokiaE71.png" url="/NokiaE71.skin" version="2"/>
     <Skin name="Nokia Lumia-920" icon="/NokiaLumia920.png" url="/NokiaLumia920.skin" version="3"/>
     <Skin name="Nokia Asha 501" icon="/NokiaAsha501.png" url="/NokiaAsha501.skin" version="3"/>
-    <Skin name="iPad Pro" icon="/ipad-pro.png" url="/ipad-pro.skin" version="1"/>
 </Skins>
