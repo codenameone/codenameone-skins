@@ -73,6 +73,10 @@ cd ../OTA/HTCOne
 cp -f ../../../cn1/Themes/android_holo_light.res .
 zip -0 ../HTCOne.skin *
 
+cd ../OTA/Nexus5
+cp -f ../../../cn1/Themes/android_holo_light.res .
+zip -0 ../Nexus5.skin *
+
 cd ../NokiaLumia920
 cp -f ../../../cn1/Themes/android_holo_light.res .
 zip -0 ../NokiaLumia920.skin *
