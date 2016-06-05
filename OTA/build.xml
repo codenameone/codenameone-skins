@@ -3,14 +3,53 @@
     <target name="build-skins">
         <copy file="../../Themes/iPhoneTheme.res" todir="../../Skins/OTA/AppleIPadMini" />
         <copy file="../../Themes/blackberry_theme.res" todir="../../Skins/OTA/BlackberryBold9790" />
+        <copy file="../../Themes/blackberry_theme.res" todir="../../Skins/OTA/torch" />
         <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/GoogleNexus7" />
         <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/HTCOne" />
+        <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/SamsungS7" />
+        <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/Nexus5" />
+        <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/xoom" />
+        <copy file="../../Themes/androidTheme.res" todir="../../Skins/OTA/nexus" />
         <copy file="../../Themes/winTheme.res" todir="../../Skins/OTA/NokiaLumia920" />
         <copy file="../../Themes/nokia_touch_theme.res" todir="../../Skins/OTA/NokiaAsha311" />
         <copy file="../../Themes/nokia_non_touch_theme.res" todir="../../Skins/OTA/NokiaE71" />
         <copy file="../../Themes/nokia_asha_theme.res" todir="../../Skins/OTA/NokiaAsha501" />
+        <copy file="../../Themes/iOS7Theme.res" todir="../../Skins/OTA/iphone6Plus" />
+        <copy file="../../Themes/iOS7Theme.res" todir="../../Skins/OTA/iphone6" />
+        <copy file="../../Themes/iOS7Theme.res" todir="../../Skins/OTA/iphone5_os7" />
+        <copy file="../../Themes/iOS7Theme.res" todir="../../Skins/OTA/iphone4_os7" />
+        <copy file="../../Themes/iOS7Theme.res" todir="../../Skins/OTA/ipad3_os7" />
+
+        <zip basedir="../../Skins/OTA/ipad3_os7" destfile="../../Skins/OTA/ipad3_os7.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+
+        <zip basedir="../../Skins/OTA/iphone4_os7" destfile="../../Skins/OTA/iphone4_os7.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+
+        <zip basedir="../../Skins/OTA/iphone5_os7" destfile="../../Skins/OTA/iphone5_os7.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+
+        <zip basedir="../../Skins/OTA/iphone6" destfile="../../Skins/OTA/iphone6.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+
+        <zip basedir="../../Skins/OTA/iphone6Plus" destfile="../../Skins/OTA/iphone6Plus.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
 
         
+        <zip basedir="../../Skins/OTA/nexus" destfile="../../Skins/OTA/nexus.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/xoom" destfile="../../Skins/OTA/xoom.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/SamsungS7" destfile="../../Skins/OTA/SamsungS7.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
         <zip basedir="../../Skins/OTA/Nexus5" destfile="../../Skins/OTA/Nexus5.skin" compress="false">
             <exclude name="**/svn/"/>
         </zip>
@@ -18,6 +57,9 @@
             <exclude name="**/svn/"/>
         </zip>
         <zip basedir="../../Skins/OTA/BlackberryBold9790" destfile="../../Skins/OTA/BlackberryBold9790.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/torch" destfile="../../Skins/OTA/torch.skin" compress="false">
             <exclude name="**/svn/"/>
         </zip>
         <zip basedir="../../Skins/OTA/GoogleNexus7" destfile="../../Skins/OTA/GoogleNexus7.skin" compress="false">
