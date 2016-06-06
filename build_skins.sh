@@ -38,12 +38,11 @@ cp -f ../../cn1/Themes/iOS7Theme.res .
 zip -0 ../ipad_os7.skin *
 cp -f ../ipad_os7.skin ../OTA/ipad_os7.skin
 
-cd ../ipad3_os7
-cp -f ../../cn1/Themes/iOS7Theme.res .
+cd ../OTA/ipad3_os7
+cp -f ../../../cn1/Themes/iOS7Theme.res .
 zip -0 ../ipad3_os7.skin *
-cp -f ../ipad3_os7.skin ../OTA/ipad3_os7.skin
 
-cd ../iphone4_os7
+cd ../../iphone4_os7
 cp -f ../../cn1/Themes/iOS7Theme.res .
 zip -0 ../iphone4_os7.skin *
 cp -f ../iphone4_os7.skin ../OTA/iphone4_os7.skin
