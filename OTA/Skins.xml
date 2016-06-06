@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Skins>
     <Skin name="Samsung S7" icon="/SamsungS7.png" url="/SamsungS7.skin" version="1"/>
+    <Skin name="HTC10" icon="/HTC10.png" url="/HTC10.skin" version="1"/>
     <Skin name="Nexus 5" icon="/Nexus5.png" url="/Nexus5.skin" version="1"/>
     <Skin name="Xoom" icon="/xoom.png" url="/xoom.skin" version="1"/>
     <Skin name="HTCOne" icon="/HTCOne.png" url="/HTCOne.skin" version="2"/>
