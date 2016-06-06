@@ -101,6 +101,10 @@ cd ../OTA/SamsungS7
 cp -f ../../../cn1/Themes/android_holo_light.res .
 zip -0 ../SamsungS7.skin *
 
+cd ../OTA/HTC10
+cp -f ../../../cn1/Themes/android_holo_light.res .
+zip -0 ../HTC10.skin *
+
 cd ../OTA/Nexus5
 cp -f ../../../cn1/Themes/android_holo_light.res .
 zip -0 ../Nexus5.skin *

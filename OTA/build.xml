@@ -7,6 +7,7 @@
         <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/GoogleNexus7" />
         <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/HTCOne" />
         <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/SamsungS7" />
+        <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/HTC10" />
         <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/Nexus5" />
         <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/xoom" />
         <copy file="../../Themes/androidTheme.res" todir="../../Skins/OTA/nexus" />
@@ -48,6 +49,9 @@
             <exclude name="**/svn/"/>
         </zip>
         <zip basedir="../../Skins/OTA/SamsungS7" destfile="../../Skins/OTA/SamsungS7.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/HTC10" destfile="../../Skins/OTA/HTC10.skin" compress="false">
             <exclude name="**/svn/"/>
         </zip>
         <zip basedir="../../Skins/OTA/Nexus5" destfile="../../Skins/OTA/Nexus5.skin" compress="false">
