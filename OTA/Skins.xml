@@ -10,9 +10,9 @@
 
     <Skin name="iPhone 6" icon="/iphone6.png" url="/iphone6.skin" version="1"/>
     <Skin name="iPhone 6+" icon="/iphone6.png" url="/iphone6Plus.skin" version="1"/>
-    <Skin name="iPhone 5 With iOS 7" icon="/iphone5_os7.png" url="/iphone5_os7.skin" version="4"/>
+    <Skin name="iPhone 5 With iOS 7" icon="/iphone5_os7.png" url="/iphone5_os7.skin" version="5"/>
     <Skin name="iPhone 5 With iOS 6" icon="/iphone5_os7.png" url="/iphone5.skin" version="4"/>
-    <Skin name="iPhone 4 With iOS 7" icon="/iphone4.png" url="/iphone4_os7.skin" version="4"/>
+    <Skin name="iPhone 4 With iOS 7" icon="/iphone4.png" url="/iphone4_os7.skin" version="5"/>
     <Skin name="iPhone 4 With iOS 6" icon="/iphone4.png" url="/iphone4.skin" version="4"/>
     <Skin name="iPhone 3gs With iOS 6" icon="/iphone3.png" url="/iphone3gs.skin" version="4"/>
     <Skin name="iPad III With iOS 7" icon="/ipad3.png" url="/ipad3_os7.skin" version="4"/>
@@ -25,6 +25,6 @@
 
     <Skin name="Nokia Asha 311" icon="/NokiaAsha311.png" url="/NokiaAsha311.skin" version="4"/>
     <Skin name="Nokia E71" icon="/NokiaE71.png" url="/NokiaE71.skin" version="2"/>
-    <Skin name="Nokia Lumia-920" icon="/NokiaLumia920.png" url="/NokiaLumia920.skin" version="3"/>
+    <Skin name="Nokia Lumia-920" icon="/NokiaLumia920.png" url="/NokiaLumia920.skin" version="4"/>
     <Skin name="Nokia Asha 501" icon="/NokiaAsha501.png" url="/NokiaAsha501.skin" version="3"/>
 </Skins>
