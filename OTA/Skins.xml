@@ -9,7 +9,7 @@
     <Skin name="Nexus One" icon="/NexusOne.png" url="/nexus.skin" version="1"/>
 
     <Skin name="iPhone 6" icon="/iphone6.png" url="/iphone6.skin" version="1"/>
-    <Skin name="iPhone 6+" icon="/iphone6.png" url="/iphone6Plus.skin" version="1"/>
+    <Skin name="iPhone 6+" icon="/iphone6.png" url="/iphone6Plus.skin" version="2"/>
     <Skin name="iPhone 5" icon="/iphone5_os7.png" url="/iphone5_os7.skin" version="6"/>
     <Skin name="iPhone 4" icon="/iphone4.png" url="/iphone4_os7.skin" version="6"/>
     <Skin name="iPad III" icon="/ipad3.png" url="/ipad3_os7.skin" version="5"/>
