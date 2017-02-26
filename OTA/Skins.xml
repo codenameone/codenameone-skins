@@ -15,6 +15,7 @@
     <Skin name="iPad III" icon="/ipad3.png" url="/ipad3_os7.skin" version="5"/>
     <Skin name="iPad II" icon="/ipad2.png" url="/ipad_os7.skin" version="5"/>
     <Skin name="iPad Mini" icon="/AppleIPadMini.png" url="/AppleIPadMini.skin" version="3"/>
+    <Skin name="iPad Pro" icon="/ipad-pro.png" url="/ipad-pro.skin" version="1"/>
 
     <Skin name="Blackberry Bold 9790" icon="/BlackberryBold9790.png" url="/BlackberryBold9790.skin" version="1"/>
     <Skin name="Blackberry Torch" icon="/torch.png" url="/torch.skin" version="1"/>
