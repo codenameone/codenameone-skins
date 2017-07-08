@@ -20,6 +20,7 @@
         <copy file="../../Themes/iOS7Theme.res" todir="../../Skins/OTA/iphone5_os7" />
         <copy file="../../Themes/iOS7Theme.res" todir="../../Skins/OTA/iphone4_os7" />
         <copy file="../../Themes/iOS7Theme.res" todir="../../Skins/OTA/ipad3_os7" />
+        <copy file="../../Themes/android_holo_light.res" todir="../../Skins/OTA/K7" />
 
         <zip basedir="../../Skins/OTA/ipad3_os7" destfile="../../Skins/OTA/ipad3_os7.skin" compress="false">
             <exclude name="**/svn/"/>
@@ -82,6 +83,9 @@
             <exclude name="**/svn/"/>
         </zip>
         <zip basedir="../../Skins/OTA/NokiaLumia920" destfile="../../Skins/OTA/NokiaLumia920.skin" compress="false">
+            <exclude name="**/svn/"/>
+        </zip>
+        <zip basedir="../../Skins/OTA/K7" destfile="../../Skins/OTA/K7.skin" compress="false">
             <exclude name="**/svn/"/>
         </zip>
     </target>    

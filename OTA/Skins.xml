@@ -7,6 +7,7 @@
     <Skin name="HTCOne" icon="/HTCOne.png" url="/HTCOne.skin" version="2"/>
     <Skin name="Google Nexus 7" icon="/GoogleNexus7.png" url="/GoogleNexus7.skin" version="3"/>
     <Skin name="Nexus One" icon="/NexusOne.png" url="/nexus.skin" version="1"/>
+    <Skin name="K7" icon="/K7.png" url="/K7.skin" version="1"/>
 
     <Skin name="iPhone 6" icon="/iphone6.png" url="/iphone6.skin" version="1"/>
     <Skin name="iPhone 6+" icon="/iphone6.png" url="/iphone6Plus.skin" version="2"/>

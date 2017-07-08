@@ -99,10 +99,13 @@ cd ../Nexus5
 cp -f ../../cn1/Themes/android_holo_light.res .
 zip ../Nexus5.skin *
 
-
 cd ../NokiaLumia920
 cp -f ../../cn1/Themes/winTheme.res .
 zip ../NokiaLumia920.skin *
+
+cd ../K7
+cp -f ../../cn1/Themes/android_holo_light.res .
+zip ../K7.skin *
 
 cd ..
 cp *.skin OTA
