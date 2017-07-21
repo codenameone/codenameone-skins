@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Skins>
-    <Skin name="Samsung S7" icon="/SamsungS7.png" url="/SamsungS7.skin" version="2"/>
-    <Skin name="HTC10" icon="/HTC10.png" url="/HTC10.skin" version="2"/>
-    <Skin name="Nexus 5" icon="/Nexus5.png" url="/Nexus5.skin" version="2"/>
-    <Skin name="Xoom" icon="/xoom.png" url="/xoom.skin" version="2"/>
-    <Skin name="HTCOne" icon="/HTCOne.png" url="/HTCOne.skin" version="3"/>
-    <Skin name="Google Nexus 7" icon="/GoogleNexus7.png" url="/GoogleNexus7.skin" version="4"/>
-    <Skin name="Nexus One" icon="/NexusOne.png" url="/nexus.skin" version="2"/>
-    <Skin name="K7" icon="/K7.png" url="/K7.skin" version="2"/>
+    <Skin name="Samsung S7" icon="/SamsungS7.png" url="/SamsungS7.skin" version="8"/>
+    <Skin name="HTC10" icon="/HTC10.png" url="/HTC10.skin" version="8"/>
+    <Skin name="Nexus 5" icon="/Nexus5.png" url="/Nexus5.skin" version="8"/>
+    <Skin name="Xoom" icon="/xoom.png" url="/xoom.skin" version="8"/>
+    <Skin name="HTCOne" icon="/HTCOne.png" url="/HTCOne.skin" version="8"/>
+    <Skin name="Google Nexus 7" icon="/GoogleNexus7.png" url="/GoogleNexus7.skin" version="8"/>
+    <Skin name="K7" icon="/K7.png" url="/K7.skin" version="8"/>
 
-    <Skin name="iPhone 6" icon="/iphone6.png" url="/iphone6.skin" version="2"/>
-    <Skin name="iPhone 6+" icon="/iphone6.png" url="/iphone6Plus.skin" version="3"/>
-    <Skin name="iPhone 5" icon="/iphone5_os7.png" url="/iphone5_os7.skin" version="7"/>
-    <Skin name="iPhone 4" icon="/iphone4.png" url="/iphone4_os7.skin" version="7"/>
-    <Skin name="iPad III" icon="/ipad3.png" url="/ipad3_os7.skin" version="6"/>
-    <Skin name="iPad II" icon="/ipad2.png" url="/ipad_os7.skin" version="6"/>
-    <Skin name="iPad Mini" icon="/AppleIPadMini.png" url="/AppleIPadMini.skin" version="4"/>
-    <Skin name="iPad Pro" icon="/ipad-pro.png" url="/ipad-pro.skin" version="2"/>
+    <Skin name="iPhone 6" icon="/iphone6.png" url="/iphone6.skin" version="8"/>
+    <Skin name="iPhone 6+" icon="/iphone6.png" url="/iphone6Plus.skin" version="8"/>
+    <Skin name="iPhone 5" icon="/iphone5_os7.png" url="/iphone5_os7.skin" version="8"/>
+    <Skin name="iPhone 4" icon="/iphone4.png" url="/iphone4_os7.skin" version="8"/>
+    <Skin name="iPad III" icon="/ipad3.png" url="/ipad3_os7.skin" version="8"/>
+    <Skin name="iPad II" icon="/ipad2.png" url="/ipad_os7.skin" version="8"/>
+    <Skin name="iPad Mini" icon="/AppleIPadMini.png" url="/AppleIPadMini.skin" version="8"/>
+    <Skin name="iPad Pro" icon="/ipad-pro.png" url="/ipad-pro.skin" version="8"/>
 
     <Skin name="Nokia Lumia-920" icon="/NokiaLumia920.png" url="/NokiaLumia920.skin" version="4"/>
 
@@ -26,4 +25,5 @@
     <Skin name="Nokia Asha 311 (Deprecated)" icon="/NokiaAsha311.png" url="/NokiaAsha311.skin" version="4"/>
     <Skin name="Nokia E71 (Deprecated)" icon="/NokiaE71.png" url="/NokiaE71.skin" version="2"/>
     <Skin name="Nokia Asha 501 (Deprecated)" icon="/NokiaAsha501.png" url="/NokiaAsha501.skin" version="3"/>
+    <Skin name="Nexus One" icon="/NexusOne.png" url="/nexus.skin" version="8"/>
 </Skins>
