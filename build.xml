@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="codenameone-skins" default="default" basedir=".">
+  <property name="cn1.path" value="../../cn1"/>
+  <target name="android">
+    <zip destfile="android.skin">
+      <fileset dir="android"/>
+      <fileset file="${cn1.path}/Themes/androidTheme.res"/>
+    </zip>
+  </target>
+  <target name="feature_phone">
+    <zip destfile="feature_phone.skin">
+      <fileset dir="feature_phone"/>
+    </zip>
+  </target>
+  <target name="ipad">
+    <zip destfile="ipad.skin">
+      <fileset dir="ipad"/>
+      <fileset file="${cn1.path}/Themes/iPhoneTheme.res"/>
+    </zip>
+  </target>
+  <target name="ipad3">
+    <zip destfile="ipad3.skin">
+      <fileset dir="ipad3"/>
+      <fileset file="${cn1.path}/Themes/iPhoneTheme.res"/>
+    </zip>
+  </target>
+  <target name="iphone4">
+    <zip destfile="iphone4.skin">
+      <fileset dir="iphone4"/>
+      <fileset file="${cn1.path}/Themes/iPhoneTheme.res"/>
+    </zip>
+  </target>
+  <target name="iphone5">
+    <zip destfile="iphone5.skin">
+      <fileset dir="iphone5"/>
+      <fileset file="${cn1.path}/Themes/iPhoneTheme.res"/>
+    </zip>
+  </target>
+  <target name="iphone5_os7">
+    <zip destfile="iphone5_os7.skin">
+      <fileset dir="iphone5_os7"/>
+      <fileset file="${cn1.path}/Themes/iOS7Theme.res"/>
+    </zip>
+  </target>
+  <target name="iphone3gs_os7">
+    <zip destfile="iphone3gs_os7.skin">
+      <fileset dir="iphone3gs_os7"/>
+      <fileset file="${cn1.path}/Themes/iOS7Theme.res"/>
+    </zip>
+  </target>
+  <target name="ipad_os7">
+    <zip destfile="ipad_os7.skin">
+      <fileset dir="ipad_os7"/>
+      <fileset file="${cn1.path}/Themes/iOS7Theme.res"/>
+    </zip>
+  </target>
+  <target name="ipad3_os7">
+    <zip destfile="ipad3_os7.skin">
+      <fileset dir="ipad3_os7"/>
+      <fileset file="${cn1.path}/Themes/iOS7Theme.res"/>
+    </zip>
+  </target>
+  <target name="iphone4_os7">
+    <zip destfile="iphone4_os7.skin">
+      <fileset dir="iphone4_os7"/>
+      <fileset file="${cn1.path}/Themes/iOS7Theme.res"/>
+    </zip>
+  </target>
+  <target name="iphone6Plus">
+    <zip destfile="iphone6Plus.skin">
+      <fileset dir="iphone6Plus"/>
+      <fileset file="${cn1.path}/Themes/iOS7Theme.res"/>
+    </zip>
+  </target>
+  <target name="iphone6">
+    <zip destfile="iphone6.skin">
+      <fileset dir="iphone6"/>
+      <fileset file="${cn1.path}/Themes/iOS7Theme.res"/>
+    </zip>
+  </target>
+  
+
+  <target name="nexus">
+    <zip destfile="nexus.skin">
+      <fileset dir="nexus"/>
+      <fileset file="${cn1.path}/Themes/androidTheme.res"/>
+    </zip>
+  </target>
+  <target name="iphone3gs">
+    <zip destfile="iphone3gs.skin">
+      <fileset dir="iphone3gs"/>
+      <fileset file="${cn1.path}/Themes/iPhoneTheme.res"/>
+    </zip>
+  </target>
+  <target name="torch">
+    <zip destfile="torch.skin">
+      <fileset dir="torch"/>
+      <fileset file="${cn1.path}/Themes/blackberry_theme.res"/>
+    </zip>
+  </target>
+  <target name="lumia">
+    <zip destfile="lumia.skin">
+      <fileset dir="lumia"/>
+      <fileset file="${cn1.path}/Themes/winTheme.res"/>
+    </zip>
+  </target>
+  <target name="xoom">
+    <zip destfile="xoom.skin">
+      <fileset dir="xoom"/>
+      <fileset file="${cn1.path}/Themes/android_holo_light.res"/>
+    </zip>
+  </target>
+  <target name="HTCOne">
+    <zip destfile="HTCOne.skin">
+      <fileset dir="HTCOne"/>
+      <fileset file="${cn1.path}/Themes/android_holo_light.res"/>
+    </zip>
+  </target>
+  <target name="SamsungS7">
+    <zip destfile="SamsungS7.skin">
+      <fileset dir="SamsungS7"/>
+      <fileset file="${cn1.path}/Themes/android_holo_light.res"/>
+    </zip>
+  </target>
+  <target name="HTC10">
+    <zip destfile="HTC10.skin">
+      <fileset dir="HTC10"/>
+      <fileset file="${cn1.path}/Themes/android_holo_light.res"/>
+    </zip>
+  </target>
+  <target name="Nexus5">
+    <zip destfile="Nexus5.skin">
+      <fileset dir="Nexus5"/>
+      <fileset file="${cn1.path}/Themes/android_holo_light.res"/>
+    </zip>
+  </target>
+  <target name="NokiaLumia920">
+    <zip destfile="NokiaLumia920.skin">
+      <fileset dir="NokiaLumia920"/>
+      <fileset file="${cn1.path}/Themes/winTheme.res"/>
+    </zip>
+  </target>
+  <target name="K7">
+    <zip destfile="K7.skin">
+      <fileset dir="K7"/>
+      <fileset file="${cn1.path}/Themes/android_holo_light.res"/>
+    </zip>
+  </target>
+  <target name="default" depends="K7,NokiaLumia920,Nexus5,HTC10,SamsungS7,HTCOne,xoom,lumia,torch,iphone3gs,android,feature_phone,ipad,ipad3,iphone4,iphone5,iphone5_os7,iphone3gs_os7,ipad_os7,ipad3_os7,iphone4_os7,iphone6Plus,iphone6,nexus">
+
+  </target>
+</project>
