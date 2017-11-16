@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="codenameone-skins" default="default" basedir=".">
-  <property name="cn1.path" value="../../cn1"/>
+  <property name="cn1.path" value="../cn1"/>
   <target name="android">
     <zip destfile="android.skin">
       <fileset dir="android"/>
@@ -78,7 +78,7 @@
       <fileset file="${cn1.path}/Themes/iOS7Theme.res"/>
     </zip>
   </target>
-  
+
 
   <target name="nexus">
     <zip destfile="nexus.skin">
