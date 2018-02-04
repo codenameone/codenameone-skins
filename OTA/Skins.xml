@@ -1,5 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Skins>
+
+    <Skin name="GooglePixel" icon="/Android.png" url="/GooglePixel.skin" version="10"/>        
+
+    <Skin name="GooglePixel2" icon="/Android.png" url="/GooglePixel2.skin" version="10"/>        
+
+    <Skin name="GooglePixel2XL" icon="/Android.png" url="/GooglePixel2XL.skin" version="10"/>        
+
+    <Skin name="HTCOneA9" icon="/Android.png" url="/HTCOneA9.skin" version="10"/>        
+
+    <Skin name="HTCOneM8" icon="/Android.png" url="/HTCOneM8.skin" version="10"/>        
+
+    <Skin name="HuaweiP8" icon="/Android.png" url="/HuaweiP8.skin" version="10"/>        
+
+    <Skin name="MicrosoftLumia950" icon="/Windows.png" url="/MicrosoftLumia950.skin" version="10"/>        
+
+    <Skin name="MotoE" icon="/Android.png" url="/MotoE.skin" version="10"/>        
+
+    <Skin name="MotoG" icon="/Android.png" url="/MotoG.skin" version="10"/>        
+
+    <Skin name="Nexus4" icon="/Android.png" url="/Nexus4.skin" version="10"/>        
+
+    <Skin name="Nexus5X" icon="/Android.png" url="/Nexus5X.skin" version="10"/>        
+
+    <Skin name="Nexus6P" icon="/Android.png" url="/Nexus6P.skin" version="10"/>        
+
+    <Skin name="SamsungGalaxyGrandPrime" icon="/Android.png" url="/SamsungGalaxyGrandPrime.skin" version="10"/>        
+
+    <Skin name="SamsungGalaxyNote5" icon="/Android.png" url="/SamsungGalaxyNote5.skin" version="10"/>        
+
+    <Skin name="SamsungGalaxyS3" icon="/Android.png" url="/SamsungGalaxyS3.skin" version="10"/>        
+
+    <Skin name="SamsungGalaxyS5" icon="/Android.png" url="/SamsungGalaxyS5.skin" version="10"/>        
+
+    <Skin name="SamsungGalaxyS7" icon="/Android.png" url="/SamsungGalaxyS7.skin" version="10"/>        
+
+    <Skin name="SamsungGalaxyS8" icon="/Android.png" url="/SamsungGalaxyS8.skin" version="10"/>        
+
+    <Skin name="iPhone5c" icon="/Apple.png" url="/iPhone5c.skin" version="10"/>        
+
+    <Skin name="iPhone5s" icon="/Apple.png" url="/iPhone5s.skin" version="10"/>        
+
+    <Skin name="iPhone6s" icon="/Apple.png" url="/iPhone6s.skin" version="10"/>        
+
+    <Skin name="iPhone6sPlus" icon="/Apple.png" url="/iPhone6sPlus.skin" version="10"/>        
+
+    <Skin name="iPhone7" icon="/Apple.png" url="/iPhone7.skin" version="10"/>        
+
+    <Skin name="iPhone7Plus" icon="/Apple.png" url="/iPhone7Plus.skin" version="10"/>        
+
+    <Skin name="iPhone8" icon="/Apple.png" url="/iPhone8.skin" version="10"/>        
+
+    <Skin name="iPhone8Plus" icon="/Apple.png" url="/iPhone8Plus.skin" version="10"/>        
+
+    <Skin name="iPhoneX" icon="/Apple.png" url="/iPhoneX.skin" version="10"/>        
+
+    <Skin name="MicrosoftSurface3" icon="/Windows.png" url="/MicrosoftSurface3.skin" version="10"/>        
+
+    <Skin name="MicrosoftSurfacePro4" icon="/Windows.png" url="/MicrosoftSurfacePro4.skin" version="10"/>        
+
+    <Skin name="Nexus9" icon="/Android.png" url="/Nexus9.skin" version="10"/>        
+
+    <Skin name="iPadAir2" icon="/Apple.png" url="/iPadAir2.skin" version="10"/>        
+    
+    <Skin name="iPadMini4" icon="/Apple.png" url="/iPadMini4.skin" version="10"/>        
+
+    <Skin name="iPadPro" icon="/Apple.png" url="/iPadPro.skin" version="10"/>        
+    
     <Skin name="Samsung S7" icon="/SamsungS7.png" url="/SamsungS7.skin" version="10"/>
     <Skin name="HTC10" icon="/HTC10.png" url="/HTC10.skin" version="10"/>
     <Skin name="Nexus 5" icon="/Nexus5.png" url="/Nexus5.skin" version="10"/>
