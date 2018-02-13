@@ -47,6 +47,7 @@
       <fileset dir="iphone3gs_os7"/>
       <fileset file="${cn1.path}/Themes/iOS7Theme.res"/>
     </zip>
+    <copy file="iphone3gs_os7.skin" tofile="OTA/iphone3gs_os7.skin"/>
   </target>
   <target name="ipad_os7">
     <zip destfile="ipad_os7.skin">
