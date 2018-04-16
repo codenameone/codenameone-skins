@@ -92,6 +92,7 @@
       <fileset dir="iphone3gs"/>
       <fileset file="${cn1.path}/Themes/iPhoneTheme.res"/>
     </zip>
+    <copy file="iphone3gs.skin" tofile="OTA/iphone3gs.skin"/>
   </target>
   <target name="torch">
     <zip destfile="torch.skin">
