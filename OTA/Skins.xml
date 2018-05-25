@@ -37,23 +37,23 @@
 
     <Skin name="SamsungGalaxyS8" icon="/Android.png" url="/SamsungGalaxyS8.skin" version="10"/>        
 
-    <Skin name="iPhone5c" icon="/Apple.png" url="/iPhone5c.skin" version="11"/>        
+    <Skin name="iPhone5c" icon="/Apple.png" url="/iPhone5c.skin" version="14"/>        
 
-    <Skin name="iPhone5s" icon="/Apple.png" url="/iPhone5s.skin" version="11"/>        
+    <Skin name="iPhone5s" icon="/Apple.png" url="/iPhone5s.skin" version="14"/>        
 
-    <Skin name="iPhone6s" icon="/Apple.png" url="/iPhone6s.skin" version="11"/>        
+    <Skin name="iPhone6s" icon="/Apple.png" url="/iPhone6s.skin" version="14"/>        
 
-    <Skin name="iPhone6sPlus" icon="/Apple.png" url="/iPhone6sPlus.skin" version="11"/>        
+    <Skin name="iPhone6sPlus" icon="/Apple.png" url="/iPhone6sPlus.skin" version="14"/>        
 
-    <Skin name="iPhone7" icon="/Apple.png" url="/iPhone7.skin" version="11"/>        
+    <Skin name="iPhone7" icon="/Apple.png" url="/iPhone7.skin" version="14"/>        
 
-    <Skin name="iPhone7Plus" icon="/Apple.png" url="/iPhone7Plus.skin" version="11"/>        
+    <Skin name="iPhone7Plus" icon="/Apple.png" url="/iPhone7Plus.skin" version="14"/>        
 
-    <Skin name="iPhone8" icon="/Apple.png" url="/iPhone8.skin" version="11"/>        
+    <Skin name="iPhone8" icon="/Apple.png" url="/iPhone8.skin" version="14"/>        
 
-    <Skin name="iPhone8Plus" icon="/Apple.png" url="/iPhone8Plus.skin" version="11"/>        
+    <Skin name="iPhone8Plus" icon="/Apple.png" url="/iPhone8Plus.skin" version="14"/>        
 
-    <Skin name="iPhoneX" icon="/Apple.png" url="/iPhoneX.skin" version="11"/>        
+    <Skin name="iPhoneX" icon="/Apple.png" url="/iPhoneX.skin" version="14"/>        
 
     <Skin name="MicrosoftSurface3" icon="/Windows.png" url="/MicrosoftSurface3.skin" version="10"/>        
 
@@ -61,11 +61,11 @@
 
     <Skin name="Nexus9" icon="/Android.png" url="/Nexus9.skin" version="10"/>        
 
-    <Skin name="iPadAir2" icon="/Apple.png" url="/iPadAir2.skin" version="11"/>        
+    <Skin name="iPadAir2" icon="/Apple.png" url="/iPadAir2.skin" version="14"/>        
     
-    <Skin name="iPadMini4" icon="/Apple.png" url="/iPadMini4.skin" version="11"/>        
+    <Skin name="iPadMini4" icon="/Apple.png" url="/iPadMini4.skin" version="14"/>        
 
-    <Skin name="iPadPro" icon="/Apple.png" url="/iPadPro.skin" version="11"/>        
+    <Skin name="iPadPro" icon="/Apple.png" url="/iPadPro.skin" version="14"/>        
     
     <Skin name="Samsung S7" icon="/SamsungS7.png" url="/SamsungS7.skin" version="10"/>
     <Skin name="HTC10" icon="/HTC10.png" url="/HTC10.skin" version="10"/>
@@ -75,14 +75,14 @@
     <Skin name="Google Nexus 7" icon="/GoogleNexus7.png" url="/GoogleNexus7.skin" version="10"/>
     <Skin name="K7" icon="/K7.png" url="/K7.skin" version="10"/>
 
-    <Skin name="iPhone 6" icon="/iphone6.png" url="/iphone6.skin" version="11"/>
-    <Skin name="iPhone 6+" icon="/iphone6.png" url="/iphone6Plus.skin" version="11"/>
-    <Skin name="iPhone 5" icon="/iphone5_os7.png" url="/iphone5_os7.skin" version="11"/>
-    <Skin name="iPhone 4" icon="/iphone4.png" url="/iphone4_os7.skin" version="11"/>
-    <Skin name="iPad III" icon="/ipad3.png" url="/ipad3_os7.skin" version="11"/>
-    <Skin name="iPad II" icon="/ipad2.png" url="/ipad_os7.skin" version="11"/>
-    <Skin name="iPad Mini" icon="/AppleIPadMini.png" url="/AppleIPadMini.skin" version="11"/>
-    <Skin name="iPad Pro" icon="/ipad-pro.png" url="/ipad-pro.skin" version="11"/>
+    <Skin name="iPhone 6" icon="/iphone6.png" url="/iphone6.skin" version="14"/>
+    <Skin name="iPhone 6+" icon="/iphone6.png" url="/iphone6Plus.skin" version="14"/>
+    <Skin name="iPhone 5" icon="/iphone5_os7.png" url="/iphone5_os7.skin" version="14"/>
+    <Skin name="iPhone 4" icon="/iphone4.png" url="/iphone4_os7.skin" version="14"/>
+    <Skin name="iPad III" icon="/ipad3.png" url="/ipad3_os7.skin" version="14"/>
+    <Skin name="iPad II" icon="/ipad2.png" url="/ipad_os7.skin" version="14"/>
+    <Skin name="iPad Mini" icon="/AppleIPadMini.png" url="/AppleIPadMini.skin" version="14"/>
+    <Skin name="iPad Pro" icon="/ipad-pro.png" url="/ipad-pro.skin" version="14"/>
 
     <Skin name="Nokia Lumia-920" icon="/NokiaLumia920.png" url="/NokiaLumia920.skin" version="4"/>
 
