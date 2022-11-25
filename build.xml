@@ -154,7 +154,14 @@
         <fileset file="${cn1.path}/Themes/iOS7Theme.res"/>
       </zip>
     </target>
-  <target name="default" depends="iPhoneX,K7,NokiaLumia920,Nexus5,HTC10,SamsungS7,HTCOne,xoom,lumia,torch,iphone3gs,android,feature_phone,ipad,ipad3,iphone4,iphone5,iphone5_os7,iphone3gs_os7,ipad_os7,ipad3_os7,iphone4_os7,iphone6Plus,iphone6,nexus">
+  <target name="SamsungGalaxyS21Ultra">
+    <zip destfile="OTA/SamsungGalaxyS21Ultra.skin">
+      <fileset dir="Phones/SamsungGalaxyS21Ultra"/>
+      <fileset file="${cn1.path}/Themes/android_holo_light.res"/>
+    </zip>
+  </target>
+
+  <target name="default" depends="iPhoneX,K7,NokiaLumia920,Nexus5,HTC10,SamsungS7,HTCOne,xoom,lumia,torch,iphone3gs,android,feature_phone,ipad,ipad3,iphone4,iphone5,iphone5_os7,iphone3gs_os7,ipad_os7,ipad3_os7,iphone4_os7,iphone6Plus,iphone6,nexus,SamsungGalaxyS21Ultra">
 
   </target>
 </project>

@@ -275,6 +275,11 @@ cd iPadPro
 cp -f ../../../cn1/Themes/iOS7Theme.res .
 zip -9 ../../OTA/iPadPro.skin *
 cd ..
-                        
+
+cd SamsungGalaxyS21Ultra
+cp -f ../../../cn1/Themes/android_holo_light.res .
+zip -9 ../../OTA/SamsungGalaxyS21Ultra.skin *
+cd ..
+
 cd ..
 

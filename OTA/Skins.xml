@@ -3,7 +3,9 @@
 
     <Skin name="GooglePixel" icon="/Android.png" url="/GooglePixel.skin" version="11"/>        
 
-    <Skin name="GooglePixel2" icon="/Android.png" url="/GooglePixel2.skin" version="11"/>        
+    <Skin name="GooglePixel2" icon="/Android.png" url="/GooglePixel2.skin" version="11"/>
+
+    <Skin name="SamsungGalaxyS21Ultra" icon="/Android.png" url="/SamsungGalaxyS21Ultra.skin" version="11"/>
 
     <Skin name="GooglePixel2XL" icon="/Android.png" url="/GooglePixel2XL.skin" version="11"/>        
 
