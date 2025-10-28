@@ -14,8 +14,8 @@ from pathlib import Path
 from typing import Iterable, List
 from urllib.request import urlopen
 
-CODENAMEONE_JAR_URL = "https://github.com/codenameone/CodenameOne/releases/latest/download/CodenameOne.jar"
-JAVA_SE_PORT_JAR_URL = "https://github.com/codenameone/CodenameOne/releases/latest/download/JavaSEPort.jar"
+CODENAMEONE_JAR_URL = "https://raw.githubusercontent.com/codenameone/CodenameOne/master/dist/CodenameOne.jar"
+JAVA_SE_PORT_JAR_URL = "https://raw.githubusercontent.com/codenameone/CodenameOne/master/dist/JavaSEPort.jar"
 HARNESS_SOURCE = Path(__file__).resolve().parent / "java" / "SkinHarness.java"
 
 
@@ -39,10 +39,13 @@ def _ensure_artifact(target_dir: Path, url: str) -> Path:
     if artifact_path.exists():
         return artifact_path
 
-    with urlopen(url) as response, tempfile.NamedTemporaryFile(delete=False) as tmp:
-        shutil.copyfileobj(response, tmp)
-        tmp.flush()
-        tmp_path = Path(tmp.name)
+    try:
+        with urlopen(url) as response, tempfile.NamedTemporaryFile(delete=False) as tmp:
+            shutil.copyfileobj(response, tmp)
+            tmp.flush()
+            tmp_path = Path(tmp.name)
+    except Exception as exc:  # urllib raises a variety of exceptions, surface them uniformly
+        raise VerificationError(f"Failed to download artifact from {url}: {exc}") from exc
 
     tmp_path.replace(artifact_path)
     return artifact_path
