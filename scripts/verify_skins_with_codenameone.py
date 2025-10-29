@@ -14,8 +14,14 @@ from pathlib import Path
 from typing import Iterable, List
 from urllib.request import urlopen
 
-CODENAMEONE_JAR_URL = "https://raw.githubusercontent.com/codenameone/CodenameOne/master/dist/CodenameOne.jar"
-JAVA_SE_PORT_JAR_URL = "https://raw.githubusercontent.com/codenameone/CodenameOne/master/dist/JavaSEPort.jar"
+CODENAMEONE_JAR_URLS = [
+    "https://github.com/codenameone/CodenameOne/releases/latest/download/CodenameOne.jar",
+    "https://raw.githubusercontent.com/codenameone/CodenameOne/master/dist/CodenameOne.jar",
+]
+JAVA_SE_PORT_JAR_URLS = [
+    "https://github.com/codenameone/CodenameOne/releases/latest/download/JavaSEPort.jar",
+    "https://raw.githubusercontent.com/codenameone/CodenameOne/master/dist/JavaSEPort.jar",
+]
 HARNESS_SOURCE = Path(__file__).resolve().parent / "java" / "SkinHarness.java"
 
 
@@ -32,23 +38,30 @@ def _load_report(path: Path) -> List[dict]:
     return [entry for entry in generated if isinstance(entry, dict)]
 
 
-def _ensure_artifact(target_dir: Path, url: str) -> Path:
+def _ensure_artifact(target_dir: Path, urls: Iterable[str]) -> Path:
     target_dir.mkdir(parents=True, exist_ok=True)
-    filename = url.rsplit("/", 1)[-1]
-    artifact_path = target_dir / filename
-    if artifact_path.exists():
+    errors: list[str] = []
+    for url in urls:
+        filename = url.rsplit("/", 1)[-1]
+        artifact_path = target_dir / filename
+        if artifact_path.exists():
+            return artifact_path
+
+        try:
+            with urlopen(url) as response, tempfile.NamedTemporaryFile(delete=False) as tmp:
+                shutil.copyfileobj(response, tmp)
+                tmp.flush()
+                tmp_path = Path(tmp.name)
+        except Exception as exc:  # urllib raises a variety of exceptions, surface them uniformly
+            errors.append(f"{url}: {exc}")
+            continue
+
+        tmp_path.replace(artifact_path)
         return artifact_path
 
-    try:
-        with urlopen(url) as response, tempfile.NamedTemporaryFile(delete=False) as tmp:
-            shutil.copyfileobj(response, tmp)
-            tmp.flush()
-            tmp_path = Path(tmp.name)
-    except Exception as exc:  # urllib raises a variety of exceptions, surface them uniformly
-        raise VerificationError(f"Failed to download artifact from {url}: {exc}") from exc
-
-    tmp_path.replace(artifact_path)
-    return artifact_path
+    raise VerificationError(
+        "Failed to download required artifact. Attempts: " + "; ".join(errors) if errors else "No URLs supplied"
+    )
 
 
 def _find_tool(tool_name: str) -> Path:
@@ -99,7 +112,12 @@ def _run_harness(classpath: Iterable[Path], classes_dir: Path, skin_path: Path) 
     subprocess.run(cmd, check=True)
 
 
-def verify_skins(report_file: Path, work_dir: Path, codenameone_url: str, javase_port_url: str) -> None:
+def verify_skins(
+    report_file: Path,
+    work_dir: Path,
+    codenameone_urls: Iterable[str],
+    javase_port_urls: Iterable[str],
+) -> None:
     generated = _load_report(report_file)
     if not generated:
         print("No generated skins to verify.")
@@ -111,8 +129,8 @@ def verify_skins(report_file: Path, work_dir: Path, codenameone_url: str, javase
     work_dir.mkdir(parents=True, exist_ok=True)
     artifacts_dir = work_dir / "artifacts"
     classes_dir = work_dir / "classes"
-    codenameone_jar = _ensure_artifact(artifacts_dir, codenameone_url)
-    javase_port_jar = _ensure_artifact(artifacts_dir, javase_port_url)
+    codenameone_jar = _ensure_artifact(artifacts_dir, codenameone_urls)
+    javase_port_jar = _ensure_artifact(artifacts_dir, javase_port_urls)
     classpath = [codenameone_jar, javase_port_jar]
 
     _compile_harness(HARNESS_SOURCE, classpath, classes_dir)
@@ -136,21 +154,26 @@ def parse_args(argv: List[str]) -> argparse.Namespace:
     )
     parser.add_argument(
         "--codenameone-url",
-        default=CODENAMEONE_JAR_URL,
-        help="URL of the Codename One API jar to download",
+        action="append",
+        default=[],
+        help="URL of the Codename One API jar to download (can be provided multiple times)",
     )
     parser.add_argument(
         "--javase-url",
-        default=JAVA_SE_PORT_JAR_URL,
-        help="URL of the Codename One JavaSEPort simulator jar to download",
+        action="append",
+        default=[],
+        help="URL of the Codename One JavaSEPort simulator jar to download (can be provided multiple times)",
     )
     return parser.parse_args(argv)
 
 
 def main(argv: List[str] | None = None) -> int:
     args = parse_args(argv or sys.argv[1:])
+    codenameone_urls = args.codenameone_url or CODENAMEONE_JAR_URLS
+    javase_urls = args.javase_url or JAVA_SE_PORT_JAR_URLS
+
     try:
-        verify_skins(args.report_file, args.work_dir, args.codenameone_url, args.javase_url)
+        verify_skins(args.report_file, args.work_dir, codenameone_urls, javase_urls)
     except VerificationError as exc:
         print(f"Verification failed: {exc}", file=sys.stderr)
         return 1
