@@ -29,6 +29,13 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "tmp" / "generated_skins"
 DEFAULT_METADATA_PATH = REPO_ROOT / ".github" / "skin-generation-log.json"
 
+# Roots that contain upstream Android emulator skin assets that still need
+# Codename One archives.  The historical Codename One skins that ship with the
+# simulator live at the repository root and should be ignored – those are
+# already committed and would just be regenerated unnecessarily.  Only the
+# Android emulator dumps (phones/tablets) are eligible for conversion.
+EMULATOR_SKIN_ROOTS = ("Phones", "Tablets")
+
 # Directories that should never be considered as skin sources.
 EXCLUDED_TOP_LEVEL = {".git", "OTA", "tmp", ".github"}
 
@@ -65,14 +72,20 @@ def _save_metadata(path: Path, records: Dict[str, Dict[str, str]]) -> None:
 
 
 def _iter_skin_directories() -> Iterable[Path]:
-    for properties_file in REPO_ROOT.rglob("skin.properties"):
-        try:
-            relative_parts = properties_file.relative_to(REPO_ROOT).parts
-        except ValueError:
+    for root_name in EMULATOR_SKIN_ROOTS:
+        candidate_root = REPO_ROOT / root_name
+        if not candidate_root.exists():
             continue
-        if relative_parts[0] in EXCLUDED_TOP_LEVEL:
-            continue
-        yield properties_file.parent
+        for properties_file in candidate_root.rglob("skin.properties"):
+            try:
+                relative_parts = properties_file.relative_to(REPO_ROOT).parts
+            except ValueError:
+                continue
+            if not relative_parts:
+                continue
+            if relative_parts[0] in EXCLUDED_TOP_LEVEL:
+                continue
+            yield properties_file.parent
 
 
 def _directory_fingerprint(directory: Path) -> str:
@@ -89,6 +102,18 @@ def _directory_fingerprint(directory: Path) -> str:
         sha.update(item.name.encode("utf-8"))
         sha.update(item.read_bytes())
     return sha.hexdigest()
+
+
+def _find_existing_archive(name: str) -> Path | None:
+    ota_dir = REPO_ROOT / "OTA"
+    candidate = ota_dir / f"{name}.skin"
+    if candidate.exists():
+        return candidate
+    return None
+
+
+def _isoformat_from_timestamp(timestamp: float) -> str:
+    return _dt.datetime.utcfromtimestamp(timestamp).replace(microsecond=0).strftime(ISO_8601_Z_SUFFIX)
 
 
 MANUAL_PIXEL_RATIOS = {
@@ -221,6 +246,8 @@ def process_skins(
     dry_run: bool = False,
     force: bool = False,
 ) -> Tuple[List[SkinGeneration], List[str]]:
+    output_dir = output_dir.resolve()
+    metadata_path = metadata_path.resolve()
     metadata = _load_metadata(metadata_path)
     generated: List[SkinGeneration] = []
     skipped: List[str] = []
@@ -232,8 +259,20 @@ def process_skins(
         archive_path = output_dir / f"{skin_name}.skin"
         fingerprint = _directory_fingerprint(skin_dir)
         record = metadata.get(metadata_key)
+        existing_archive = _find_existing_archive(skin_name)
 
         if not force and record and record.get("fingerprint") == fingerprint:
+            skipped.append(skin_name)
+            continue
+
+        if not force and record is None and existing_archive is not None:
+            if not dry_run:
+                metadata[metadata_key] = {
+                    "generated_at": _isoformat_from_timestamp(existing_archive.stat().st_mtime),
+                    "source": relative_source,
+                    "fingerprint": fingerprint,
+                    "archive": _relative_to_repo(existing_archive),
+                }
             skipped.append(skin_name)
             continue
 

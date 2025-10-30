@@ -1,4 +1,233 @@
 {
-  "generated": "2025-10-27T00:00:00Z",
-  "skins": {}
+  "generated": "2025-10-30T17:21:06Z",
+  "skins": {
+    "Phones/GooglePixel": {
+      "archive": "OTA/GooglePixel.skin",
+      "fingerprint": "af444bb2ed0f66f8bd0fff12ba66541dd834cb438cfec14b7d5660a5a915e50c",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/GooglePixel"
+    },
+    "Phones/GooglePixel2": {
+      "archive": "OTA/GooglePixel2.skin",
+      "fingerprint": "8d3f0a2fb622bee004be9b81d4a9dae8f48876181941159a604a849e53e632cf",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/GooglePixel2"
+    },
+    "Phones/GooglePixel2XL": {
+      "archive": "OTA/GooglePixel2XL.skin",
+      "fingerprint": "43e04b87630d1ecf12cef4f57a18be78184b9399b65007ccc37d604552546e0a",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/GooglePixel2XL"
+    },
+    "Phones/HTCOneA9": {
+      "archive": "OTA/HTCOneA9.skin",
+      "fingerprint": "0b6c33bb5eed17a941917dbca90ca0dd2f2110947c2662785808777c36473cea",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/HTCOneA9"
+    },
+    "Phones/HTCOneM8": {
+      "archive": "OTA/HTCOneM8.skin",
+      "fingerprint": "b9a0e401fd5facb4711f0efee941eeae46578e1250b933a9a14528e3ef33266d",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/HTCOneM8"
+    },
+    "Phones/HuaweiP8": {
+      "archive": "OTA/HuaweiP8.skin",
+      "fingerprint": "2395dd1fe19ee072d99a847260985065cb19d7a56d927d7f69de6b6835a1ce10",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/HuaweiP8"
+    },
+    "Phones/IPhone15": {
+      "archive": "tmp/generated_skins/IPhone15.skin",
+      "fingerprint": "99ed4508ab767939e57935d042d49aed16c215c3e5d5b189b866931bfe18dbfb",
+      "generated_at": "2025-10-30T17:21:06Z",
+      "source": "Phones/IPhone15"
+    },
+    "Phones/IPhone15Plus": {
+      "archive": "tmp/generated_skins/IPhone15Plus.skin",
+      "fingerprint": "985ac8e585511bdc2fcc8f5ae63a3c3988c4c5849acf09e01be8566def4be0e9",
+      "generated_at": "2025-10-30T17:21:06Z",
+      "source": "Phones/IPhone15Plus"
+    },
+    "Phones/IPhone15Pro": {
+      "archive": "tmp/generated_skins/IPhone15Pro.skin",
+      "fingerprint": "f524be6dacea494a8a0574beb10cc693812261a5d8bde5c92adc2aaab15839b9",
+      "generated_at": "2025-10-30T17:21:06Z",
+      "source": "Phones/IPhone15Pro"
+    },
+    "Phones/IPhone15ProMax": {
+      "archive": "tmp/generated_skins/IPhone15ProMax.skin",
+      "fingerprint": "8172516a62880883ac6916fb0a04850a4916bd5846e0f9e237654a7aef96e1fc",
+      "generated_at": "2025-10-30T17:21:06Z",
+      "source": "Phones/IPhone15ProMax"
+    },
+    "Phones/MicrosoftLumia950": {
+      "archive": "OTA/MicrosoftLumia950.skin",
+      "fingerprint": "8f72f6e802c0613d12021c31710b1fb30e7a7efa6cdeb2e4266be3041de04e56",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/MicrosoftLumia950"
+    },
+    "Phones/MotoE": {
+      "archive": "OTA/MotoE.skin",
+      "fingerprint": "af44a8948d6e43248757ff53ef74cbbfd5eb9121ad5d81edc32ed38c564cf3d0",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/MotoE"
+    },
+    "Phones/MotoG": {
+      "archive": "OTA/MotoG.skin",
+      "fingerprint": "e9edd5a6b01d311af18d777d39b9ae74dc8d7ce46953e3f1fcd31cafa76c3c95",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/MotoG"
+    },
+    "Phones/Nexus4": {
+      "archive": "OTA/Nexus4.skin",
+      "fingerprint": "e802798d311c04302e54caddedbf9991e2bd016e6cf233a41885e97c534a55df",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/Nexus4"
+    },
+    "Phones/Nexus5X": {
+      "archive": "OTA/Nexus5X.skin",
+      "fingerprint": "a923722fcf583afef15b2d77fccbd9083c6446ff89f14a6d7456a628a68f3f5c",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/Nexus5X"
+    },
+    "Phones/Nexus6P": {
+      "archive": "OTA/Nexus6P.skin",
+      "fingerprint": "a61065691024419ab3162bc83e5b15e6ec61282ae37892642a83b21bba634fde",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/Nexus6P"
+    },
+    "Phones/SamsungGalaxyGrandPrime": {
+      "archive": "OTA/SamsungGalaxyGrandPrime.skin",
+      "fingerprint": "563d2cb3f41d2ad2512a6eb1c5053d8c8a58f912d0bdbbf311dc513ecd152bae",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/SamsungGalaxyGrandPrime"
+    },
+    "Phones/SamsungGalaxyNote5": {
+      "archive": "OTA/SamsungGalaxyNote5.skin",
+      "fingerprint": "0d72660276783ca1739da56227db0176c0515e1e641eb9b964da4b8fa00615e1",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/SamsungGalaxyNote5"
+    },
+    "Phones/SamsungGalaxyS21Ultra": {
+      "archive": "OTA/SamsungGalaxyS21Ultra.skin",
+      "fingerprint": "4cfee65a636cf766312f829d48933bbe8a8cc2e7f9d15827d16d8c0764967da4",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/SamsungGalaxyS21Ultra"
+    },
+    "Phones/SamsungGalaxyS3": {
+      "archive": "OTA/SamsungGalaxyS3.skin",
+      "fingerprint": "f7d5b0fdccac553199fa587c797d81a3fa1c381563244cbb8f43c46c4024d272",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/SamsungGalaxyS3"
+    },
+    "Phones/SamsungGalaxyS5": {
+      "archive": "OTA/SamsungGalaxyS5.skin",
+      "fingerprint": "37086e57f9757387d83ae6e301f66072c1fe4cda14630882fef91944d6fb88d4",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/SamsungGalaxyS5"
+    },
+    "Phones/SamsungGalaxyS7": {
+      "archive": "OTA/SamsungGalaxyS7.skin",
+      "fingerprint": "d144504d90921ed11435c15a3f85793bc6435c124071102493860d6350b789f7",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/SamsungGalaxyS7"
+    },
+    "Phones/SamsungGalaxyS8": {
+      "archive": "OTA/SamsungGalaxyS8.skin",
+      "fingerprint": "11cd40b5ed466f2030a0aadd25e713468289e2f1b369fe41efe0dc870ed2f683",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/SamsungGalaxyS8"
+    },
+    "Phones/iPhone5c": {
+      "archive": "OTA/iPhone5c.skin",
+      "fingerprint": "16673ae3766e20b9b8f770b2b34e0dd9faf5a805c9c940c041352f77131b4816",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/iPhone5c"
+    },
+    "Phones/iPhone5s": {
+      "archive": "OTA/iPhone5s.skin",
+      "fingerprint": "fb7d355fe069ec4f52150b449cb736bf9632871c1c0541dbba03d04fdcdf7bd3",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/iPhone5s"
+    },
+    "Phones/iPhone6s": {
+      "archive": "OTA/iPhone6s.skin",
+      "fingerprint": "f76a535b5aa5dda713b4c884e143eacd33eca168d6f702ec363a0dc48a600148",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/iPhone6s"
+    },
+    "Phones/iPhone6sPlus": {
+      "archive": "OTA/iPhone6sPlus.skin",
+      "fingerprint": "add8e8105620f554646af51e32e900e3b9d0f0b3ada20fa86ef3e175e6a3129f",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/iPhone6sPlus"
+    },
+    "Phones/iPhone7": {
+      "archive": "OTA/iPhone7.skin",
+      "fingerprint": "acfb2e503755b34589c8ec62c524420d3cafe0252584ac38f154d4400d9859c3",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/iPhone7"
+    },
+    "Phones/iPhone7Plus": {
+      "archive": "OTA/iPhone7Plus.skin",
+      "fingerprint": "5f6457d8a680cc26f3060a37dc5467acadc57c0b1ad257bd31109023efcc527c",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/iPhone7Plus"
+    },
+    "Phones/iPhone8": {
+      "archive": "OTA/iPhone8.skin",
+      "fingerprint": "ecf77841d0f7d3a1fa4c0b8c310660ab40b5aaf4e58c063a1389d90569a67a1b",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/iPhone8"
+    },
+    "Phones/iPhone8Plus": {
+      "archive": "OTA/iPhone8Plus.skin",
+      "fingerprint": "53cf8a43750f9a3c69340d24a35756e64a5fa10f13c7006373f9cea8e0abb06b",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/iPhone8Plus"
+    },
+    "Phones/iPhoneX": {
+      "archive": "OTA/iPhoneX.skin",
+      "fingerprint": "0969bafc7d2d421e0bc6caffd4e0591e145daf57567eea02dfa212e4e0680bc9",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Phones/iPhoneX"
+    },
+    "Tablets/MicrosoftSurface3": {
+      "archive": "OTA/MicrosoftSurface3.skin",
+      "fingerprint": "fe6e9ea8612deda90f9d3566ebad25a88a58dc99c646b7976f314283e841d1a1",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Tablets/MicrosoftSurface3"
+    },
+    "Tablets/MicrosoftSurfacePro4": {
+      "archive": "OTA/MicrosoftSurfacePro4.skin",
+      "fingerprint": "b37e750f60b509f201dba0cb1b65b3c2c3a0402637a05c72b56a8be7dbdf3394",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Tablets/MicrosoftSurfacePro4"
+    },
+    "Tablets/Nexus9": {
+      "archive": "OTA/Nexus9.skin",
+      "fingerprint": "f2f064b7495712b9d6d5d63461ab9485e7045c149dd581ecd60a96782725ae97",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Tablets/Nexus9"
+    },
+    "Tablets/iPadAir2": {
+      "archive": "OTA/iPadAir2.skin",
+      "fingerprint": "2ea144f50999e9e63f9d2344a7d176f7f2acbc8c97da90c282f8dc034db1a46e",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Tablets/iPadAir2"
+    },
+    "Tablets/iPadMini4": {
+      "archive": "OTA/iPadMini4.skin",
+      "fingerprint": "17fe1854982356b01d77218ec4261459d183327681814ab2546cd602204df9fd",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Tablets/iPadMini4"
+    },
+    "Tablets/iPadPro": {
+      "archive": "OTA/iPadPro.skin",
+      "fingerprint": "b90d501a309efb305d1142e8022224f1317d178738b945e2595592521763a01e",
+      "generated_at": "2025-10-30T14:20:19Z",
+      "source": "Tablets/iPadPro"
+    }
+  }
 }
