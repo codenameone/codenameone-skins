@@ -15,16 +15,18 @@ from typing import Iterable, List
 from urllib.request import Request, urlopen
 
 CODENAMEONE_JAR_URLS = [
+    "https://repo1.maven.org/maven2/com/codenameone/codenameone-core/7.0.209/codenameone-core-7.0.209.jar",
+    "https://repo1.maven.org/maven2/com/codenameone/codenameone-core/7.0.208/codenameone-core-7.0.208.jar",
     "https://github.com/codenameone/CodenameOne/releases/latest/download/CodenameOne.jar",
     "https://raw.githubusercontent.com/codenameone/CodenameOne/master/dist/CodenameOne.jar",
-    "https://repo1.maven.org/maven2/com/codenameone/codenameone/7.0.208/codenameone-7.0.208.jar",
     "https://repo1.maven.org/maven2/com/codenameone/codenameone/7.0/codenameone-7.0.jar",
     "https://repo1.maven.org/maven2/com/codenameone/codenameone/6.0/codenameone-6.0.jar",
 ]
 JAVA_SE_PORT_JAR_URLS = [
+    "https://repo1.maven.org/maven2/com/codenameone/codenameone-javase/7.0.209/codenameone-javase-7.0.209.jar",
+    "https://repo1.maven.org/maven2/com/codenameone/codenameone-javase/7.0.208/codenameone-javase-7.0.208.jar",
     "https://github.com/codenameone/CodenameOne/releases/latest/download/JavaSEPort.jar",
     "https://raw.githubusercontent.com/codenameone/CodenameOne/master/dist/JavaSEPort.jar",
-    "https://repo1.maven.org/maven2/com/codenameone/java-se/7.0.208/java-se-7.0.208.jar",
     "https://repo1.maven.org/maven2/com/codenameone/java-se/7.0/java-se-7.0.jar",
     "https://repo1.maven.org/maven2/com/codenameone/java-se/6.0/java-se-6.0.jar",
 ]
