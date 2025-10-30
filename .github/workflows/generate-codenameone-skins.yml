@@ -37,6 +37,9 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Install Python dependencies
+        run: pip install Pillow
+
       - name: Generate missing Codename One skins
         run: |
           python scripts/generate_missing_skins.py \
