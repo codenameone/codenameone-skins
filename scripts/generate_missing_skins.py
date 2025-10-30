@@ -55,6 +55,7 @@ class AndroidSkinSource:
     metadata_prefix: str
     allowed_roots: Tuple[str, ...] = ()
     subdirectory: Optional[str] = None
+    alternate_urls: Tuple[str, ...] = ()
 
 
 ANDROID_SKIN_SOURCES: Tuple[AndroidSkinSource, ...] = (
@@ -70,12 +71,20 @@ ANDROID_SKIN_SOURCES: Tuple[AndroidSkinSource, ...] = (
         slug="Google",
         url="https://github.com/google/device-art-generator",
         metadata_prefix="google/",
+        alternate_urls=(
+            "https://github.com/googlesamples/device-art-generator",
+            "https://github.com/googlearchive/device-art-generator",
+        ),
     ),
     AndroidSkinSource(
         name="Samsung emulator skins",
         slug="Samsung",
         url="https://github.com/HiDeoo/avd-samsung-skins",
         metadata_prefix="samsung/",
+        alternate_urls=(
+            "https://github.com/HiDeoo/android-emulator-samsung-skins",
+            "https://github.com/HiDeoo/avd-skins",
+        ),
     ),
 )
 
@@ -576,94 +585,139 @@ def _convert_skin_directory(
         _write_android_resources(zf)
 
 
+def _github_repo_from_url(url: str) -> Optional[Tuple[str, str]]:
+    parsed = urlparse(url)
+    if parsed.netloc != "github.com":
+        return None
+    parts = [p for p in parsed.path.strip("/").split("/") if p]
+    if len(parts) < 2:
+        return None
+    owner, repo = parts[0], parts[1]
+    if repo.endswith(".git"):
+        repo = repo[:-4]
+    return owner, repo
+
+
+def _branch_candidates(base_url: str) -> List[str]:
+    owner_repo = _github_repo_from_url(base_url)
+    candidates: List[str] = []
+    headers = {"User-Agent": "codenameone-skin-generator/1.0"}
+    if owner_repo:
+        owner, repo = owner_repo
+        api_url = f"https://api.github.com/repos/{owner}/{repo}"
+        try:
+            request = Request(api_url, headers=headers)
+            with urlopen(request) as response:  # type: ignore[arg-type]
+                payload = json.load(response)
+            default_branch = payload.get("default_branch")
+            if isinstance(default_branch, str) and default_branch:
+                candidates.append(default_branch)
+        except Exception:  # pragma: no cover - network dependent
+            pass
+
+    for branch in ("main", "master", "dev", "develop"):
+        if branch not in candidates:
+            candidates.append(branch)
+    return candidates
+
+
 def _download_android_skin_repo(source: AndroidSkinSource) -> Tuple[Path, Path]:
     parsed = urlparse(source.url)
     if parsed.scheme not in {"http", "https"}:
         raise ValueError(f"Unsupported URL scheme for Android skin source: {source.url}")
 
-    base = source.url.rstrip("/")
-    candidates: List[str]
-    if base.endswith(".zip"):
-        candidates = [base]
-    else:
-        candidates = [
-            f"{base}/archive/refs/heads/main.zip",
-            f"{base}/archive/refs/heads/master.zip",
-            f"{base}/archive/refs/heads/dev.zip",
-        ]
-
     tmp_root = Path(tempfile.mkdtemp(prefix="android-skins-"))
     archive_path = tmp_root / "repo.zip"
     headers = {"User-Agent": "codenameone-skin-generator/1.0"}
     errors: List[str] = []
-    downloaded = False
 
-    for candidate in candidates:
-        try:
-            request = Request(candidate, headers=headers)
-            with urlopen(request) as response, archive_path.open("wb") as fh:  # type: ignore[arg-type]
-                shutil.copyfileobj(response, fh)
-            downloaded = True
-            break
-        except Exception as exc:  # pylint: disable=broad-except
-            errors.append(f"{candidate}: {exc}")
+    base_urls: Tuple[str, ...] = (source.url, *source.alternate_urls)
 
-    if downloaded:
-        with ZipFile(archive_path) as zf:
-            zf.extractall(tmp_root)
-            top_level: List[Path] = []
-            for name in zf.namelist():
-                if not name:
-                    continue
-                root = Path(name.split("/", 1)[0])
-                if root not in top_level:
-                    top_level.append(root)
-            repo_root: Path
-            if source.subdirectory:
-                candidate = tmp_root / source.subdirectory
-                if candidate.exists():
-                    repo_root = candidate
-                elif len(top_level) == 1:
-                    candidate = tmp_root / top_level[0] / source.subdirectory
-                    repo_root = candidate if candidate.exists() else tmp_root / top_level[0]
-                elif top_level:
-                    repo_root = tmp_root / top_level[0]
-                else:
-                    repo_root = tmp_root
-            elif len(top_level) == 1:
-                repo_root = tmp_root / top_level[0]
+    for base_url in base_urls:
+        base = base_url.rstrip("/")
+        branch_candidates = _branch_candidates(base)
+        archive_candidates: List[str]
+        if base.endswith(".zip"):
+            archive_candidates = [base]
+        else:
+            archive_candidates = [
+                f"{base}/archive/refs/heads/{branch}.zip" for branch in branch_candidates
+            ]
+
+        for candidate in archive_candidates:
+            try:
+                request = Request(candidate, headers=headers)
+                with urlopen(request) as response, archive_path.open("wb") as fh:  # type: ignore[arg-type]
+                    shutil.copyfileobj(response, fh)
+                with ZipFile(archive_path) as zf:
+                    zf.extractall(tmp_root)
+                    top_level: List[Path] = []
+                    for name in zf.namelist():
+                        if not name:
+                            continue
+                        root = Path(name.split("/", 1)[0])
+                        if root not in top_level:
+                            top_level.append(root)
+                    if source.subdirectory:
+                        candidate_dir = tmp_root / source.subdirectory
+                        if candidate_dir.exists():
+                            repo_root = candidate_dir
+                        elif len(top_level) == 1:
+                            candidate_dir = tmp_root / top_level[0] / source.subdirectory
+                            repo_root = (
+                                candidate_dir if candidate_dir.exists() else tmp_root / top_level[0]
+                            )
+                        elif top_level:
+                            repo_root = tmp_root / top_level[0]
+                        else:
+                            repo_root = tmp_root
+                    elif len(top_level) == 1:
+                        repo_root = tmp_root / top_level[0]
+                    else:
+                        repo_root = tmp_root
+                return repo_root, tmp_root
+            except Exception as exc:  # pylint: disable=broad-except
+                errors.append(f"{candidate}: {exc}")
+
+    # Zip downloads failed, try shallow git clones as fallbacks
+    for attempt_index, base_url in enumerate(base_urls):
+        branch_candidates = _branch_candidates(base_url)
+        for branch in branch_candidates:
+            clone_dir = tmp_root / f"repo-{attempt_index}-{branch}"
+            try:
+                subprocess.run(
+                    [
+                        "git",
+                        "clone",
+                        "--depth",
+                        "1",
+                        "--single-branch",
+                        "--filter=blob:none",
+                        "--branch",
+                        branch,
+                        base_url,
+                        str(clone_dir),
+                    ],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
+            except subprocess.CalledProcessError as exc:  # pragma: no cover - network dependent
+                stderr = exc.stderr.strip()
+                stdout = exc.stdout.strip()
+                details = stderr or stdout or str(exc)
+                errors.append(f"git clone ({base_url}@{branch}): {details}")
+                continue
+            except FileNotFoundError as exc:  # pragma: no cover - git missing
+                errors.append(f"git clone unavailable: {exc}")
+                break
             else:
-                repo_root = tmp_root
-
-        return repo_root, tmp_root
-
-    # Zip downloads failed, try a shallow git clone as a fallback
-    clone_dir = tmp_root / "repo"
-    try:
-        subprocess.run(
-            [
-                "git",
-                "clone",
-                "--depth",
-                "1",
-                source.url,
-                str(clone_dir),
-            ],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-    except subprocess.CalledProcessError as exc:  # pragma: no cover - network dependent
-        errors.append(f"git clone: {exc.stderr.strip() or exc.stdout.strip() or exc}")
-    except FileNotFoundError as exc:  # pragma: no cover - git missing
-        errors.append(f"git clone unavailable: {exc}")
-    else:
-        repo_root = clone_dir
-        if source.subdirectory:
-            candidate = clone_dir / source.subdirectory
-            if candidate.exists():
-                repo_root = candidate
-        return repo_root, tmp_root
+                repo_root = clone_dir
+                if source.subdirectory:
+                    candidate_dir = clone_dir / source.subdirectory
+                    if candidate_dir.exists():
+                        repo_root = candidate_dir
+                return repo_root, tmp_root
 
     shutil.rmtree(tmp_root, ignore_errors=True)
     raise RuntimeError(
