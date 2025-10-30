@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """Generate Codename One skin archives for directories that are missing them.
 
-This script inspects the repository for directories that contain ``skin.properties``
-files (i.e. Codename One skin definitions). For each such directory it verifies that
-an OTA ``.skin`` archive has not yet been captured in the metadata ledger. Missing
-entries are regenerated with maximum compression and recorded in the ledger so that
-future runs can skip work that has already been performed.
+This script inspects an Android emulator skin repository for directories that
+contain ``skin.properties`` files (i.e. Codename One skin definitions). The
+repository can be provided as a local checkout or downloaded automatically from
+GitHub (the default points at
+``https://github.com/larskristianhaga/Android-emulator-skins``). For each
+discovered directory it verifies that an OTA ``.skin`` archive has not yet been
+captured in the metadata ledger. Missing entries are regenerated with maximum
+compression and recorded in the ledger so that future runs can skip work that has
+already been performed.
 
 The resulting archives are written to a configurable output directory (``tmp/`` by
 default) so that the Git repository does not need to track large binary assets.
@@ -21,13 +25,18 @@ import hashlib
 import json
 import math
 import re
+import shutil
+import tempfile
 from pathlib import Path
-from typing import Dict, Iterable, List, Tuple
+from typing import Callable, Dict, Iterable, List, Tuple
+from urllib.parse import urlparse
+from urllib.request import Request, urlopen
 from zipfile import ZIP_DEFLATED, ZipFile
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "tmp" / "generated_skins"
 DEFAULT_METADATA_PATH = REPO_ROOT / ".github" / "skin-generation-log.json"
+DEFAULT_ANDROID_SKINS_SOURCE = "https://github.com/larskristianhaga/Android-emulator-skins"
 
 # Roots that contain upstream Android emulator skin assets that still need
 # Codename One archives.  The historical Codename One skins that ship with the
@@ -48,6 +57,7 @@ class SkinGeneration:
 
     name: str
     source_dir: Path
+    source_relative: str
     archive_path: Path
 
 
@@ -71,14 +81,14 @@ def _save_metadata(path: Path, records: Dict[str, Dict[str, str]]) -> None:
         fh.write("\n")
 
 
-def _iter_skin_directories() -> Iterable[Path]:
+def _iter_skin_directories(android_repo_root: Path) -> Iterable[Path]:
     for root_name in EMULATOR_SKIN_ROOTS:
-        candidate_root = REPO_ROOT / root_name
+        candidate_root = android_repo_root / root_name
         if not candidate_root.exists():
             continue
         for properties_file in candidate_root.rglob("skin.properties"):
             try:
-                relative_parts = properties_file.relative_to(REPO_ROOT).parts
+                relative_parts = properties_file.relative_to(android_repo_root).parts
             except ValueError:
                 continue
             if not relative_parts:
@@ -243,6 +253,7 @@ def process_skins(
     *,
     output_dir: Path,
     metadata_path: Path,
+    android_repo_root: Path,
     dry_run: bool = False,
     force: bool = False,
 ) -> Tuple[List[SkinGeneration], List[str]]:
@@ -252,8 +263,11 @@ def process_skins(
     generated: List[SkinGeneration] = []
     skipped: List[str] = []
 
-    for skin_dir in sorted(_iter_skin_directories(), key=lambda p: p.relative_to(REPO_ROOT).as_posix()):
-        relative_source = skin_dir.relative_to(REPO_ROOT).as_posix()
+    for skin_dir in sorted(
+        _iter_skin_directories(android_repo_root),
+        key=lambda p: p.relative_to(android_repo_root).as_posix(),
+    ):
+        relative_source = skin_dir.relative_to(android_repo_root).as_posix()
         skin_name = skin_dir.name
         metadata_key = relative_source
         archive_path = output_dir / f"{skin_name}.skin"
@@ -277,7 +291,7 @@ def process_skins(
             continue
 
         if dry_run:
-            generated.append(SkinGeneration(skin_name, skin_dir, archive_path))
+            generated.append(SkinGeneration(skin_name, skin_dir, relative_source, archive_path))
             continue
 
         source_hint = relative_source
@@ -289,7 +303,7 @@ def process_skins(
             "fingerprint": fingerprint,
             "archive": archive_entry,
         }
-        generated.append(SkinGeneration(skin_name, skin_dir, archive_path))
+        generated.append(SkinGeneration(skin_name, skin_dir, relative_source, archive_path))
 
     if not dry_run:
         ordered = dict(sorted(metadata.items()))
@@ -311,7 +325,7 @@ def _write_report(report_path: Path, generated: List[SkinGeneration], skipped: L
             {
                 "skin": entry.name,
                 "archive": entry.archive_path.as_posix(),
-                "source": entry.source_dir.relative_to(REPO_ROOT).as_posix(),
+                "source": entry.source_relative,
             }
             for entry in generated
         ],
@@ -321,6 +335,71 @@ def _write_report(report_path: Path, generated: List[SkinGeneration], skipped: L
     with report_path.open("w", encoding="utf-8") as fh:
         json.dump(report_payload, fh, indent=2, sort_keys=True)
         fh.write("\n")
+
+
+def _download_android_skin_repo(source: str) -> Tuple[Path, Path]:
+    """Download a remote Android skin repository and return the extracted path and temp root."""
+
+    parsed = urlparse(source)
+    if parsed.scheme not in {"http", "https"}:
+        raise ValueError(f"Unsupported URL scheme for Android skin source: {source}")
+
+    base = source.rstrip("/")
+    candidates: List[str]
+    if base.endswith(".zip"):
+        candidates = [base]
+    else:
+        candidates = [
+            f"{base}/archive/refs/heads/main.zip",
+            f"{base}/archive/refs/heads/master.zip",
+        ]
+
+    tmp_root = Path(tempfile.mkdtemp(prefix="android-skins-"))
+    archive_path = tmp_root / "repo.zip"
+    headers = {"User-Agent": "codenameone-skin-generator/1.0"}
+    errors: List[str] = []
+
+    for candidate in candidates:
+        try:
+            request = Request(candidate, headers=headers)
+            with urlopen(request) as response, archive_path.open("wb") as fh:  # type: ignore[arg-type]
+                shutil.copyfileobj(response, fh)
+            break
+        except Exception as exc:  # pylint: disable=broad-except
+            errors.append(f"{candidate}: {exc}")
+    else:
+        shutil.rmtree(tmp_root, ignore_errors=True)
+        raise RuntimeError(
+            "Failed to download Android emulator skins. Attempts: " + "; ".join(errors)
+        )
+
+    with ZipFile(archive_path) as zf:
+        zf.extractall(tmp_root)
+        top_level: List[Path] = []
+        for name in zf.namelist():
+            if not name:
+                continue
+            root = Path(name.split("/", 1)[0])
+            if root not in top_level:
+                top_level.append(root)
+        if len(top_level) == 1:
+            repo_root = tmp_root / top_level[0]
+        else:
+            repo_root = tmp_root
+
+    return repo_root, tmp_root
+
+
+def _resolve_android_skins_source(spec: str) -> Tuple[Path, Callable[[], None]]:
+    """Resolve an Android emulator skin source into a filesystem path."""
+
+    candidate_path = Path(spec)
+    if candidate_path.exists():
+        return candidate_path.resolve(), lambda: None
+
+    repo_root, tmp_root = _download_android_skin_repo(spec)
+    cleanup = lambda: shutil.rmtree(tmp_root, ignore_errors=True)
+    return repo_root, cleanup
 
 
 def main() -> int:
@@ -348,14 +427,28 @@ def main() -> int:
         action="store_true",
         help="Regenerate skins even if the metadata fingerprint matches",
     )
+    parser.add_argument(
+        "--android-skins-source",
+        default=DEFAULT_ANDROID_SKINS_SOURCE,
+        help=(
+            "Filesystem path or repository URL containing Android emulator skins "
+            "(default: https://github.com/larskristianhaga/Android-emulator-skins)"
+        ),
+    )
     args = parser.parse_args()
 
-    generated, skipped = process_skins(
-        output_dir=args.output_dir,
-        metadata_path=args.metadata,
-        dry_run=args.dry_run,
-        force=args.force,
-    )
+    cleanup = lambda: None
+    try:
+        android_repo_root, cleanup = _resolve_android_skins_source(args.android_skins_source)
+        generated, skipped = process_skins(
+            output_dir=args.output_dir,
+            metadata_path=args.metadata,
+            android_repo_root=android_repo_root,
+            dry_run=args.dry_run,
+            force=args.force,
+        )
+    finally:
+        cleanup()
 
     if generated:
         print("Generated/updated skins:\n - " + "\n - ".join(entry.name for entry in sorted(generated, key=lambda e: e.name)))
