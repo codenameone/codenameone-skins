@@ -7,6 +7,13 @@ on:
       - '.github/workflows/**'
       - '**/*.yml'
       - '**/*.yaml'
+      - 'scripts/**'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '**/*.yml'
+      - '**/*.yaml'
+      - 'scripts/**'
 
 permissions:
   contents: write
