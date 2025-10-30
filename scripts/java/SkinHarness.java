@@ -72,30 +72,27 @@ public final class SkinHarness {
     }
 
     private static void invokeSkinLoader(Method loadSkin, Simulator simulator, File skinFile) throws Exception {
-        int parameterCount = loadSkin.getParameterCount();
         Class<?>[] paramTypes = loadSkin.getParameterTypes();
-        Object firstArg;
+        Object[] args = new Object[paramTypes.length];
+
         if (File.class.isAssignableFrom(paramTypes[0])) {
-            firstArg = skinFile;
+            args[0] = skinFile;
         } else {
-            firstArg = skinFile.getAbsolutePath();
+            args[0] = skinFile.getAbsolutePath();
+        }
+
+        for (int i = 1; i < paramTypes.length; i++) {
+            Class<?> type = paramTypes[i];
+            if (!isBooleanType(type)) {
+                System.err.println("Unsupported loadSkin parameter type at index " + i + ": " + type.getName());
+                System.exit(65);
+                return;
+            }
+            args[i] = type.isPrimitive() ? false : Boolean.FALSE;
         }
 
         loadSkin.setAccessible(true);
-
-        if (parameterCount == 1) {
-            loadSkin.invoke(simulator, firstArg);
-            return;
-        }
-
-        if (parameterCount == 2 && isBooleanType(paramTypes[1])) {
-            Object secondArg = paramTypes[1].isPrimitive() ? false : Boolean.FALSE;
-            loadSkin.invoke(simulator, firstArg, secondArg);
-            return;
-        }
-
-        System.err.println("Unsupported loadSkin signature: " + loadSkin);
-        System.exit(65);
+        loadSkin.invoke(simulator, args);
     }
 
     private static Method findSkinLoader(Class<?> type) {
@@ -132,16 +129,18 @@ public final class SkinHarness {
         }
 
         int count = method.getParameterCount();
-        if (count == 1) {
-            Class<?> arg = method.getParameterTypes()[0];
-            return File.class.isAssignableFrom(arg) || CharSequence.class.isAssignableFrom(arg);
-        }
-
-        if (count == 2) {
+        if (count >= 1) {
             Class<?>[] params = method.getParameterTypes();
             boolean firstValid = File.class.isAssignableFrom(params[0]) || CharSequence.class.isAssignableFrom(params[0]);
-            boolean secondValid = isBooleanType(params[1]);
-            return firstValid && secondValid;
+            if (!firstValid) {
+                return false;
+            }
+            for (int i = 1; i < count; i++) {
+                if (!isBooleanType(params[i])) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         return false;
