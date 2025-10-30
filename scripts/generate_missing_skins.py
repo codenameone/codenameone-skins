@@ -19,6 +19,8 @@ import dataclasses
 import datetime as _dt
 import hashlib
 import json
+import math
+import re
 from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
 from zipfile import ZIP_DEFLATED, ZipFile
@@ -89,14 +91,123 @@ def _directory_fingerprint(directory: Path) -> str:
     return sha.hexdigest()
 
 
-def _zip_skin_directory(source_dir: Path, target_zip: Path) -> None:
+MANUAL_PIXEL_RATIOS = {
+    "BlackberryBold9790": 9.681166903317413,
+    "Tablets/MicrosoftSurface3": 8.411901488396593,
+    "Tablets/MicrosoftSurfacePro4": 10.525135276945004,
+    "android": 6.299212598425197,
+    "feature_phone": 7.158196134574087,
+    "NokiaE71": 6.672894701721608,
+    "lumia": 8.54195479926065,
+    "nexus": 9.927136658600213,
+}
+
+
+def _parse_skin_properties(text: str) -> Tuple[Dict[str, str], List[str]]:
+    props: Dict[str, str] = {}
+    comments: List[str] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith("#"):
+            comments.append(stripped)
+            continue
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if key not in props:
+            props[key] = value
+    return props, comments
+
+
+def _derive_pixel_ratio(props: Dict[str, str], comments: List[str], source_hint: str) -> float | None:
+    if "pixelRatio" in props:
+        try:
+            return float(props["pixelRatio"])
+        except ValueError:
+            return None
+
+    def _parse_float(value: str) -> float | None:
+        try:
+            parsed = float(value)
+        except (TypeError, ValueError):
+            return None
+        if parsed <= 0:
+            return None
+        return parsed
+
+    ppi = _parse_float(props.get("ppi")) or _parse_float(props.get("dpi"))
+    if ppi is None:
+        for line in comments:
+            match = re.search(r"(\d+(?:\.\d+)?)\s*(?:pp|dp)i", line, flags=re.IGNORECASE)
+            if match:
+                ppi = _parse_float(match.group(1))
+                if ppi:
+                    break
+        if ppi is None:
+            diag = None
+            width = height = None
+            for line in comments:
+                if diag is None:
+                    diag_match = re.search(r"(\d+(?:\.\d+)?)\"", line)
+                    if diag_match:
+                        diag = _parse_float(diag_match.group(1))
+                if width is None or height is None:
+                    res_match = re.search(r"(\d+)\s*[xX]\s*(\d+)", line)
+                    if res_match:
+                        width = int(res_match.group(1))
+                        height = int(res_match.group(2))
+                if diag and width and height:
+                    break
+            if diag and width and height:
+                diag_pixels = math.hypot(width, height)
+                if diag_pixels > 0 and diag > 0:
+                    ppi = diag_pixels / diag
+
+    if ppi is None:
+        ratio = MANUAL_PIXEL_RATIOS.get(source_hint)
+        return ratio
+
+    return ppi / 25.4
+
+
+def _ensure_trailing_newline(text: str) -> str:
+    if text.endswith("\n"):
+        return text
+    if text.endswith("\r\n"):
+        return text
+    return text + "\n"
+
+
+def _maybe_augment_skin_properties(text: str, source_hint: str) -> str:
+    props, comments = _parse_skin_properties(text)
+    ratio = _derive_pixel_ratio(props, comments, source_hint)
+    if ratio is None or "pixelRatio" in props:
+        return _ensure_trailing_newline(text)
+
+    formatted = f"pixelRatio={ratio:.12f}".rstrip("0").rstrip(".")
+    base = _ensure_trailing_newline(text)
+    if not base.endswith(("\n", "\r\n")):
+        base += "\n"
+    return base + formatted + "\n"
+
+
+def _zip_skin_directory(source_dir: Path, target_zip: Path, source_hint: str) -> None:
     target_zip.parent.mkdir(parents=True, exist_ok=True)
     with ZipFile(target_zip, "w", compression=ZIP_DEFLATED, compresslevel=9) as zf:
         for entry in sorted(source_dir.rglob("*")):
             if entry.is_dir() or entry.name.startswith("."):
                 continue
             arcname = entry.relative_to(source_dir).as_posix()
-            zf.write(entry, arcname=arcname)
+            if arcname == "skin.properties":
+                original = entry.read_text(encoding="utf-8", errors="replace")
+                updated = _maybe_augment_skin_properties(original, source_hint)
+                zf.writestr(arcname, updated)
+            else:
+                zf.write(entry, arcname=arcname)
 
 
 def _current_utc_isoformat() -> str:
@@ -130,7 +241,8 @@ def process_skins(
             generated.append(SkinGeneration(skin_name, skin_dir, archive_path))
             continue
 
-        _zip_skin_directory(skin_dir, archive_path)
+        source_hint = relative_source
+        _zip_skin_directory(skin_dir, archive_path, source_hint)
         archive_entry = _relative_to_repo(archive_path)
         metadata[metadata_key] = {
             "generated_at": _current_utc_isoformat(),
