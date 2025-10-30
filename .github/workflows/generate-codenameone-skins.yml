@@ -3,6 +3,9 @@ name: Generate Codename One skins
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
+      - master
     paths:
       - '.github/workflows/**'
       - '**/*.yml'
