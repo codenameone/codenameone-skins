@@ -9,12 +9,13 @@ import hashlib
 import io
 import json
 import math
+import os
 import re
 import shutil
 import tempfile
 from pathlib import Path
 from typing import Callable, Dict, Iterable, Iterator, List, Optional, Sequence, Tuple
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 from urllib.request import Request, urlopen
 from zipfile import ZIP_DEFLATED, ZipFile
 import subprocess
@@ -87,6 +88,47 @@ ANDROID_SKIN_SOURCES: Tuple[AndroidSkinSource, ...] = (
         ),
     ),
 )
+
+
+def _github_token() -> Optional[str]:
+    token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if token:
+        return token.strip()
+    return None
+
+
+def _github_headers(url: Optional[str] = None) -> Dict[str, str]:
+    headers: Dict[str, str] = {"User-Agent": "codenameone-skin-generator/1.0"}
+    token = _github_token()
+    if not token:
+        return headers
+    if url is None:
+        headers["Authorization"] = f"Bearer {token}"
+        return headers
+    host = urlparse(url).netloc.lower()
+    if "github.com" in host or "githubusercontent.com" in host or host.startswith("api.github"):
+        headers["Authorization"] = f"Bearer {token}"
+    return headers
+
+
+def _authenticated_git_url(url: str) -> str:
+    token = _github_token()
+    if not token:
+        return url
+    parsed = urlparse(url)
+    host = parsed.netloc.lower()
+    if "github.com" not in host:
+        return url
+    safe_netloc = f"{token}:x-oauth-basic@{parsed.netloc}"
+    return urlunparse(parsed._replace(netloc=safe_netloc))
+
+
+def _sanitize_url(url: str) -> str:
+    token = _github_token()
+    if not token:
+        return url
+    sanitized = url.replace(token, "***")
+    return sanitized.replace(f"{token}:x-oauth-basic", "***:x-oauth-basic")
 
 
 @dataclasses.dataclass(frozen=True)
@@ -601,12 +643,11 @@ def _github_repo_from_url(url: str) -> Optional[Tuple[str, str]]:
 def _branch_candidates(base_url: str) -> List[str]:
     owner_repo = _github_repo_from_url(base_url)
     candidates: List[str] = []
-    headers = {"User-Agent": "codenameone-skin-generator/1.0"}
     if owner_repo:
         owner, repo = owner_repo
         api_url = f"https://api.github.com/repos/{owner}/{repo}"
         try:
-            request = Request(api_url, headers=headers)
+            request = Request(api_url, headers=_github_headers(api_url))
             with urlopen(request) as response:  # type: ignore[arg-type]
                 payload = json.load(response)
             default_branch = payload.get("default_branch")
@@ -628,7 +669,6 @@ def _download_android_skin_repo(source: AndroidSkinSource) -> Tuple[Path, Path]:
 
     tmp_root = Path(tempfile.mkdtemp(prefix="android-skins-"))
     archive_path = tmp_root / "repo.zip"
-    headers = {"User-Agent": "codenameone-skin-generator/1.0"}
     errors: List[str] = []
 
     base_urls: Tuple[str, ...] = (source.url, *source.alternate_urls)
@@ -646,7 +686,7 @@ def _download_android_skin_repo(source: AndroidSkinSource) -> Tuple[Path, Path]:
 
         for candidate in archive_candidates:
             try:
-                request = Request(candidate, headers=headers)
+                request = Request(candidate, headers=_github_headers(candidate))
                 with urlopen(request) as response, archive_path.open("wb") as fh:  # type: ignore[arg-type]
                     shutil.copyfileobj(response, fh)
                 with ZipFile(archive_path) as zf:
@@ -677,7 +717,7 @@ def _download_android_skin_repo(source: AndroidSkinSource) -> Tuple[Path, Path]:
                         repo_root = tmp_root
                 return repo_root, tmp_root
             except Exception as exc:  # pylint: disable=broad-except
-                errors.append(f"{candidate}: {exc}")
+                errors.append(f"{_sanitize_url(candidate)}: {exc}")
 
     # Zip downloads failed, try shallow git clones as fallbacks
     for attempt_index, base_url in enumerate(base_urls):
@@ -685,6 +725,9 @@ def _download_android_skin_repo(source: AndroidSkinSource) -> Tuple[Path, Path]:
         for branch in branch_candidates:
             clone_dir = tmp_root / f"repo-{attempt_index}-{branch}"
             try:
+                clone_url = _authenticated_git_url(base_url)
+                env = os.environ.copy()
+                env.setdefault("GIT_TERMINAL_PROMPT", "0")
                 subprocess.run(
                     [
                         "git",
@@ -695,18 +738,19 @@ def _download_android_skin_repo(source: AndroidSkinSource) -> Tuple[Path, Path]:
                         "--filter=blob:none",
                         "--branch",
                         branch,
-                        base_url,
+                        clone_url,
                         str(clone_dir),
                     ],
                     check=True,
                     capture_output=True,
                     text=True,
+                    env=env,
                 )
             except subprocess.CalledProcessError as exc:  # pragma: no cover - network dependent
                 stderr = exc.stderr.strip()
                 stdout = exc.stdout.strip()
                 details = stderr or stdout or str(exc)
-                errors.append(f"git clone ({base_url}@{branch}): {details}")
+                errors.append(f"git clone ({_sanitize_url(base_url)}@{branch}): {details}")
                 continue
             except FileNotFoundError as exc:  # pragma: no cover - git missing
                 errors.append(f"git clone unavailable: {exc}")
