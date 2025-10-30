@@ -12,15 +12,19 @@ import sys
 import tempfile
 from pathlib import Path
 from typing import Iterable, List
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 CODENAMEONE_JAR_URLS = [
     "https://github.com/codenameone/CodenameOne/releases/latest/download/CodenameOne.jar",
     "https://raw.githubusercontent.com/codenameone/CodenameOne/master/dist/CodenameOne.jar",
+    "https://repo1.maven.org/maven2/com/codenameone/codenameone/7.0/codenameone-7.0.jar",
+    "https://repo1.maven.org/maven2/com/codenameone/codenameone/6.0/codenameone-6.0.jar",
 ]
 JAVA_SE_PORT_JAR_URLS = [
     "https://github.com/codenameone/CodenameOne/releases/latest/download/JavaSEPort.jar",
     "https://raw.githubusercontent.com/codenameone/CodenameOne/master/dist/JavaSEPort.jar",
+    "https://repo1.maven.org/maven2/com/codenameone/java-se/7.0/java-se-7.0.jar",
+    "https://repo1.maven.org/maven2/com/codenameone/java-se/6.0/java-se-6.0.jar",
 ]
 HARNESS_SOURCE = Path(__file__).resolve().parent / "java" / "SkinHarness.java"
 
@@ -48,7 +52,8 @@ def _ensure_artifact(target_dir: Path, urls: Iterable[str]) -> Path:
             return artifact_path
 
         try:
-            with urlopen(url) as response, tempfile.NamedTemporaryFile(delete=False) as tmp:
+            request = Request(url, headers={"User-Agent": "codenameone-skin-verifier/1.0"})
+            with urlopen(request) as response, tempfile.NamedTemporaryFile(delete=False) as tmp:
                 shutil.copyfileobj(response, tmp)
                 tmp.flush()
                 tmp_path = Path(tmp.name)
