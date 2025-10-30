@@ -33,19 +33,7 @@ public final class SkinHarness {
                 return;
             }
 
-            if (loadSkin.getParameterCount() == 1) {
-                Class<?> paramType = loadSkin.getParameterTypes()[0];
-                loadSkin.setAccessible(true);
-                if (File.class.isAssignableFrom(paramType)) {
-                    loadSkin.invoke(simulator, skinFile);
-                } else {
-                    loadSkin.invoke(simulator, skinFile.getAbsolutePath());
-                }
-            } else {
-                System.err.println("Unsupported loadSkin signature: " + loadSkin);
-                System.exit(65);
-                return;
-            }
+            invokeSkinLoader(loadSkin, simulator, skinFile);
 
             Method skinAccessor = findSkinAccessor(simulator.getClass());
             if (skinAccessor != null) {
@@ -83,19 +71,84 @@ public final class SkinHarness {
         }
     }
 
+    private static void invokeSkinLoader(Method loadSkin, Simulator simulator, File skinFile) throws Exception {
+        int parameterCount = loadSkin.getParameterCount();
+        Class<?>[] paramTypes = loadSkin.getParameterTypes();
+        Object firstArg;
+        if (File.class.isAssignableFrom(paramTypes[0])) {
+            firstArg = skinFile;
+        } else {
+            firstArg = skinFile.getAbsolutePath();
+        }
+
+        loadSkin.setAccessible(true);
+
+        if (parameterCount == 1) {
+            loadSkin.invoke(simulator, firstArg);
+            return;
+        }
+
+        if (parameterCount == 2 && isBooleanType(paramTypes[1])) {
+            Object secondArg = paramTypes[1].isPrimitive() ? false : Boolean.FALSE;
+            loadSkin.invoke(simulator, firstArg, secondArg);
+            return;
+        }
+
+        System.err.println("Unsupported loadSkin signature: " + loadSkin);
+        System.exit(65);
+    }
+
     private static Method findSkinLoader(Class<?> type) {
-        for (Method method : type.getMethods()) {
-            if (!method.getName().equals("loadSkin")) {
-                continue;
-            }
-            if (method.getParameterCount() == 1) {
-                Class<?> arg = method.getParameterTypes()[0];
-                if (File.class.isAssignableFrom(arg) || CharSequence.class.isAssignableFrom(arg)) {
-                    return method;
-                }
+        Method method = findSkinLoaderInHierarchy(type);
+        if (method != null) {
+            return method;
+        }
+        for (Method candidate : type.getMethods()) {
+            if (isSkinLoader(candidate)) {
+                return candidate;
             }
         }
         return null;
+    }
+
+    private static Method findSkinLoaderInHierarchy(Class<?> type) {
+        Class<?> current = type;
+        while (current != null) {
+            for (Method candidate : current.getDeclaredMethods()) {
+                if (isSkinLoader(candidate)) {
+                    candidate.setAccessible(true);
+                    return candidate;
+                }
+            }
+            current = current.getSuperclass();
+        }
+        return null;
+    }
+
+    private static boolean isSkinLoader(Method method) {
+        String name = method.getName();
+        if (!name.equals("loadSkin") && !name.equals("loadSkinFromFile")) {
+            return false;
+        }
+
+        int count = method.getParameterCount();
+        if (count == 1) {
+            Class<?> arg = method.getParameterTypes()[0];
+            return File.class.isAssignableFrom(arg) || CharSequence.class.isAssignableFrom(arg);
+        }
+
+        if (count == 2) {
+            Class<?>[] params = method.getParameterTypes();
+            boolean firstValid = File.class.isAssignableFrom(params[0]) || CharSequence.class.isAssignableFrom(params[0]);
+            boolean secondValid = isBooleanType(params[1]);
+            return firstValid && secondValid;
+        }
+
+        return false;
+    }
+
+    private static boolean isBooleanType(Class<?> type) {
+        return type == boolean.class || type == Boolean.class;
     }
 
     private static Method findSkinAccessor(Class<?> type) {
