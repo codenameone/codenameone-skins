@@ -28,7 +28,6 @@ REQUIRED_PROPERTIES = (
     "smallFontSize",
     "mediumFontSize",
     "largeFontSize",
-    "pixelRatio",
     "overrideNames",
 )
 KNOWN_THEME_FILES = {
@@ -137,7 +136,9 @@ def _validate_properties(props: dict[str, str]) -> None:
     _ensure_int("smallFontSize", props["smallFontSize"])
     _ensure_int("mediumFontSize", props["mediumFontSize"])
     _ensure_int("largeFontSize", props["largeFontSize"])
-    _ensure_float("pixelRatio", props["pixelRatio"], minimum=0.0)
+    pixel_ratio = props.get("pixelRatio")
+    if pixel_ratio is not None:
+        _ensure_float("pixelRatio", pixel_ratio, minimum=0.0)
     _validate_override_names(props["overrideNames"])
 
     platform = props["platformName"].strip()
