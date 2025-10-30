@@ -17,6 +17,7 @@ from typing import Callable, Dict, Iterable, Iterator, List, Optional, Sequence,
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
 from zipfile import ZIP_DEFLATED, ZipFile
+import subprocess
 
 try:
     from PIL import Image, ImageDraw
@@ -154,7 +155,12 @@ def _save_metadata(path: Path, records: Dict[str, Dict[str, str]]) -> None:
 
 
 def _current_utc_isoformat() -> str:
-    return _dt.datetime.utcnow().replace(microsecond=0).strftime(ISO_8601_Z_SUFFIX)
+    return (
+        _dt.datetime.now(tz=_dt.timezone.utc)
+        .astimezone(_dt.timezone.utc)
+        .replace(microsecond=0)
+        .strftime(ISO_8601_Z_SUFFIX)
+    )
 
 
 def _directory_fingerprint(directory: Path) -> str:
@@ -171,7 +177,11 @@ def _directory_fingerprint(directory: Path) -> str:
 
 
 def _isoformat_from_timestamp(timestamp: float) -> str:
-    return _dt.datetime.utcfromtimestamp(timestamp).replace(microsecond=0).strftime(ISO_8601_Z_SUFFIX)
+    return (
+        _dt.datetime.fromtimestamp(timestamp, tz=_dt.timezone.utc)
+        .replace(microsecond=0)
+        .strftime(ISO_8601_Z_SUFFIX)
+    )
 
 
 def _parse_ini_file(path: Path) -> Dict[str, str]:
@@ -579,54 +589,86 @@ def _download_android_skin_repo(source: AndroidSkinSource) -> Tuple[Path, Path]:
         candidates = [
             f"{base}/archive/refs/heads/main.zip",
             f"{base}/archive/refs/heads/master.zip",
+            f"{base}/archive/refs/heads/dev.zip",
         ]
 
     tmp_root = Path(tempfile.mkdtemp(prefix="android-skins-"))
     archive_path = tmp_root / "repo.zip"
     headers = {"User-Agent": "codenameone-skin-generator/1.0"}
     errors: List[str] = []
+    downloaded = False
 
     for candidate in candidates:
         try:
             request = Request(candidate, headers=headers)
             with urlopen(request) as response, archive_path.open("wb") as fh:  # type: ignore[arg-type]
                 shutil.copyfileobj(response, fh)
+            downloaded = True
             break
         except Exception as exc:  # pylint: disable=broad-except
             errors.append(f"{candidate}: {exc}")
-    else:
-        shutil.rmtree(tmp_root, ignore_errors=True)
-        raise RuntimeError(
-            f"Failed to download Android emulator skins from {source.url}. Attempts: " + "; ".join(errors)
-        )
 
-    with ZipFile(archive_path) as zf:
-        zf.extractall(tmp_root)
-        top_level: List[Path] = []
-        for name in zf.namelist():
-            if not name:
-                continue
-            root = Path(name.split("/", 1)[0])
-            if root not in top_level:
-                top_level.append(root)
-        repo_root: Path
-        if source.subdirectory:
-            candidate = tmp_root / source.subdirectory
-            if candidate.exists():
-                repo_root = candidate
+    if downloaded:
+        with ZipFile(archive_path) as zf:
+            zf.extractall(tmp_root)
+            top_level: List[Path] = []
+            for name in zf.namelist():
+                if not name:
+                    continue
+                root = Path(name.split("/", 1)[0])
+                if root not in top_level:
+                    top_level.append(root)
+            repo_root: Path
+            if source.subdirectory:
+                candidate = tmp_root / source.subdirectory
+                if candidate.exists():
+                    repo_root = candidate
+                elif len(top_level) == 1:
+                    candidate = tmp_root / top_level[0] / source.subdirectory
+                    repo_root = candidate if candidate.exists() else tmp_root / top_level[0]
+                elif top_level:
+                    repo_root = tmp_root / top_level[0]
+                else:
+                    repo_root = tmp_root
             elif len(top_level) == 1:
-                candidate = tmp_root / top_level[0] / source.subdirectory
-                repo_root = candidate if candidate.exists() else tmp_root / top_level[0]
-            elif top_level:
                 repo_root = tmp_root / top_level[0]
             else:
                 repo_root = tmp_root
-        elif len(top_level) == 1:
-            repo_root = tmp_root / top_level[0]
-        else:
-            repo_root = tmp_root
 
-    return repo_root, tmp_root
+        return repo_root, tmp_root
+
+    # Zip downloads failed, try a shallow git clone as a fallback
+    clone_dir = tmp_root / "repo"
+    try:
+        subprocess.run(
+            [
+                "git",
+                "clone",
+                "--depth",
+                "1",
+                source.url,
+                str(clone_dir),
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except subprocess.CalledProcessError as exc:  # pragma: no cover - network dependent
+        errors.append(f"git clone: {exc.stderr.strip() or exc.stdout.strip() or exc}")
+    except FileNotFoundError as exc:  # pragma: no cover - git missing
+        errors.append(f"git clone unavailable: {exc}")
+    else:
+        repo_root = clone_dir
+        if source.subdirectory:
+            candidate = clone_dir / source.subdirectory
+            if candidate.exists():
+                repo_root = candidate
+        return repo_root, tmp_root
+
+    shutil.rmtree(tmp_root, ignore_errors=True)
+    raise RuntimeError(
+        f"Failed to download Android emulator skins from {source.url}. Attempts: " + "; ".join(errors)
+    )
 
 
 def _iter_android_skin_directories(root: Path, allowed_roots: Tuple[str, ...]) -> Iterator[Path]:
