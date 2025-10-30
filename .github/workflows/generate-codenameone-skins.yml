@@ -73,7 +73,7 @@ jobs:
           fi
 
       - name: Create pull request with generated skins
-        if: steps.git-status.outputs.has_changes == 'true'
+        if: steps.git-status.outputs.has_changes == 'true' && github.event_name != 'pull_request'
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: 'chore: generate missing Codename One skins'
@@ -82,3 +82,8 @@ jobs:
           body: |
             Automated Codename One skin generation.
             - Triggered by `${{ github.event_name }}` event.
+
+      - name: Skip PR creation on pull_request events
+        if: steps.git-status.outputs.has_changes == 'true' && github.event_name == 'pull_request'
+        run: |
+          echo "Detected generated skins but not creating a pull request when running on pull_request events."
