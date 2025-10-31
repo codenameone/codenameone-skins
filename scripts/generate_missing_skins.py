@@ -57,6 +57,7 @@ class AndroidSkinSource:
     allowed_roots: Tuple[str, ...] = ()
     subdirectory: Optional[str] = None
     alternate_urls: Tuple[str, ...] = ()
+    required: bool = True
 
 
 ANDROID_SKIN_SOURCES: Tuple[AndroidSkinSource, ...] = (
@@ -66,16 +67,19 @@ ANDROID_SKIN_SOURCES: Tuple[AndroidSkinSource, ...] = (
         url="https://github.com/larskristianhaga/Android-emulator-skins",
         metadata_prefix="",
         allowed_roots=("Phones", "Tablets", "phones", "tablets"),
+        required=True,
     ),
     AndroidSkinSource(
         name="Google device art resources",
         slug="Google",
-        url="https://github.com/google/device-art-generator",
+        url="https://github.com/android/device-art-resources",
         metadata_prefix="google/",
         alternate_urls=(
+            "https://github.com/google/device-art-resources",
             "https://github.com/googlesamples/device-art-generator",
             "https://github.com/googlearchive/device-art-generator",
         ),
+        required=False,
     ),
     AndroidSkinSource(
         name="Samsung emulator skins",
@@ -86,6 +90,7 @@ ANDROID_SKIN_SOURCES: Tuple[AndroidSkinSource, ...] = (
             "https://github.com/HiDeoo/android-emulator-samsung-skins",
             "https://github.com/HiDeoo/avd-skins",
         ),
+        required=False,
     ),
 )
 
@@ -789,17 +794,22 @@ def _iter_android_skin_directories(root: Path, allowed_roots: Tuple[str, ...]) -
                 yield parent
 
 
-def _resolve_sources() -> Tuple[List[ResolvedSource], List[str]]:
+def _resolve_sources() -> Tuple[List[ResolvedSource], List[str], List[str]]:
     resolved: List[ResolvedSource] = []
     errors: List[str] = []
+    warnings: List[str] = []
     for spec in ANDROID_SKIN_SOURCES:
         try:
             root, tmp_root = _download_android_skin_repo(spec)
             cleanup = lambda tmp=tmp_root: shutil.rmtree(tmp, ignore_errors=True)
             resolved.append(ResolvedSource(spec=spec, root=root, cleanup=cleanup))
         except Exception as exc:  # pylint: disable=broad-except
-            errors.append(f"{spec.name}: {exc}")
-    return resolved, errors
+            message = f"{spec.name}: {exc}"
+            if spec.required:
+                errors.append(message)
+            else:
+                warnings.append(message)
+    return resolved, errors, warnings
 
 
 def process_skins(
@@ -808,15 +818,16 @@ def process_skins(
     metadata_path: Path,
     dry_run: bool = False,
     force: bool = False,
-) -> Tuple[List[SkinGeneration], List[str], List[str]]:
+) -> Tuple[List[SkinGeneration], List[str], List[str], List[str]]:
     output_dir = output_dir.resolve()
     metadata_path = metadata_path.resolve()
     metadata = _load_metadata(metadata_path)
 
-    resolved_sources, resolve_errors = _resolve_sources()
+    resolved_sources, resolve_errors, resolve_warnings = _resolve_sources()
     generated: List[SkinGeneration] = []
     skipped: List[str] = []
     errors: List[str] = resolve_errors
+    warnings: List[str] = resolve_warnings
     used_names: set[str] = set()
 
     try:
@@ -905,7 +916,7 @@ def process_skins(
         ordered = dict(sorted(metadata.items()))
         _save_metadata(metadata_path, ordered)
 
-    return generated, skipped, errors
+    return generated, skipped, errors, warnings
 
 
 def _find_existing_archive(name: str) -> Optional[Path]:
@@ -916,7 +927,13 @@ def _find_existing_archive(name: str) -> Optional[Path]:
     return None
 
 
-def _write_report(report_path: Path, generated: List[SkinGeneration], skipped: List[str], errors: List[str]) -> None:
+def _write_report(
+    report_path: Path,
+    generated: List[SkinGeneration],
+    skipped: List[str],
+    errors: List[str],
+    warnings: List[str],
+) -> None:
     report_payload = {
         "generated": [
             {
@@ -928,6 +945,7 @@ def _write_report(report_path: Path, generated: List[SkinGeneration], skipped: L
         ],
         "skipped": sorted(skipped),
         "errors": errors,
+        "warnings": warnings,
     }
     report_path.parent.mkdir(parents=True, exist_ok=True)
     with report_path.open("w", encoding="utf-8") as fh:
@@ -962,7 +980,7 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    generated, skipped, errors = process_skins(
+    generated, skipped, errors, warnings = process_skins(
         output_dir=args.output_dir,
         metadata_path=args.metadata,
         dry_run=args.dry_run,
@@ -980,8 +998,11 @@ def main() -> int:
     if errors:
         print("Encountered issues:\n - " + "\n - ".join(errors))
 
+    if warnings:
+        print("Warnings:\n - " + "\n - ".join(warnings))
+
     if args.report_file:
-        _write_report(args.report_file, generated, skipped, errors)
+        _write_report(args.report_file, generated, skipped, errors, warnings)
 
     if errors and not args.dry_run:
         return 1
