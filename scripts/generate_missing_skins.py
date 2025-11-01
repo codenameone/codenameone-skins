@@ -62,7 +62,7 @@ class AndroidSkinSource:
 
 ANDROID_SKIN_SOURCES: Tuple[AndroidSkinSource, ...] = (
     AndroidSkinSource(
-        name="Android emulator community skins",
+        name="Lars Kristian Haga Android emulator skins",
         slug="Android",
         url="https://github.com/larskristianhaga/Android-emulator-skins",
         metadata_prefix="",
@@ -70,26 +70,17 @@ ANDROID_SKIN_SOURCES: Tuple[AndroidSkinSource, ...] = (
         required=True,
     ),
     AndroidSkinSource(
-        name="Google device art resources",
-        slug="Google",
-        url="https://github.com/android/device-art-resources",
-        metadata_prefix="google/",
-        alternate_urls=(
-            "https://github.com/google/device-art-resources",
-            "https://github.com/googlesamples/device-art-generator",
-            "https://github.com/googlearchive/device-art-generator",
-        ),
+        name="Suess Labs Android emulator skins",
+        slug="SuessLabs",
+        url="https://github.com/SuessLabs/Android-Emulator-Skins",
+        metadata_prefix="suesslabs/",
         required=False,
     ),
     AndroidSkinSource(
-        name="Samsung emulator skins",
-        slug="Samsung",
-        url="https://github.com/HiDeoo/avd-samsung-skins",
-        metadata_prefix="samsung/",
-        alternate_urls=(
-            "https://github.com/HiDeoo/android-emulator-samsung-skins",
-            "https://github.com/HiDeoo/avd-skins",
-        ),
+        name="Ming Chen Android emulator skins",
+        slug="MingChen",
+        url="https://github.com/mingchen/android-emulator-skins",
+        metadata_prefix="mingchen/",
         required=False,
     ),
 )
