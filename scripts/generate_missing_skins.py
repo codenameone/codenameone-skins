@@ -74,6 +74,7 @@ ANDROID_SKIN_SOURCES: Tuple[AndroidSkinSource, ...] = (
         slug="SuessLabs",
         url="https://github.com/SuessLabs/Android-Emulator-Skins",
         metadata_prefix="suesslabs/",
+        allowed_roots=("phones", "tablets"),
         required=False,
     ),
     AndroidSkinSource(
@@ -81,9 +82,23 @@ ANDROID_SKIN_SOURCES: Tuple[AndroidSkinSource, ...] = (
         slug="MingChen",
         url="https://github.com/mingchen/android-emulator-skins",
         metadata_prefix="mingchen/",
+        allowed_roots=("phones", "tablets", "skins", "Skins"),
         required=False,
     ),
 )
+
+DEPRECATED_SOURCE_FRAGMENTS = (
+    "device-art-generator",
+    "HiDeoo/avd-samsung-skins",
+    "android-emulator-samsung-skins",
+)
+
+for _fragment in DEPRECATED_SOURCE_FRAGMENTS:
+    for _spec in ANDROID_SKIN_SOURCES:
+        if _fragment in _spec.url:
+            raise RuntimeError(
+                f"Deprecated Android skin source configured: {_fragment} appears in {_spec.url}"
+            )
 
 
 def _github_token() -> Optional[str]:
