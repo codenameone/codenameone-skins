@@ -2,17 +2,16 @@ name: CI
 
 on:
   pull_request:
-    types: [closed]
-    branches: ["main"]
-
+    branches: ["master"]
+  push:
+    branches: ["master"]
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  release:
-    if: github.event.pull_request.merged == true
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +19,14 @@ jobs:
 
       - name: Build skins
         run: ./build_skins.sh
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
 
       - name: Create OTA release archive
         run: |
