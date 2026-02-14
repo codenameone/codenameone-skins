@@ -1,37 +1,45 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "master" branch
-  push:
-    branches: [ "master" ]
   pull_request:
-    branches: [ "master" ]
-
-  # Allows you to run this workflow manually from the Actions tab
+    branches: ["master"]
+  push:
+    branches: ["master"]
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+permissions:
+  contents: write
+
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
+      - name: Build skins
         run: ./build_skins.sh
 
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v3
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create OTA release archive
+        run: |
+          mkdir -p dist
+          cd OTA
+          find . -type f ! -path './.*' ! -path '*/.*' -print0 \
+            | sort -z \
+            | tar --null -czf "../dist/ota-${GITHUB_SHA}.tar.gz" --files-from -
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
         with:
-          name: SamsungGalaxyS7.skin
-          path: OTA/SamsungGalaxyS7.skin
-          retention-days: 5
+          tag_name: ota-${{ github.sha }}
+          name: OTA Release ${{ github.sha }}
+          generate_release_notes: true
+          files: dist/ota-${{ github.sha }}.tar.gz
